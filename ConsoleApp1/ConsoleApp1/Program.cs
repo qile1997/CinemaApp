@@ -10,19 +10,20 @@ namespace ConsoleApp1
 {
     class Program
     {
-        //public static int MovieId;
-        //public static int GetId()
-        //{
-        //    return ++MovieId;
-        //}
         private static Data data = new Data();
         static void Main(string[] args)
         {
+
             data.GenerateUserData();
             data.GenerateMovieData();
             data.GenerateMovieTime();
             data.GenerateMovieSeats();
 
+            InitializeApp();
+
+        }
+        public static void InitializeApp()
+        {
             while (true)
             {
                 Console.WriteLine("1. View all movies");
@@ -65,6 +66,7 @@ namespace ConsoleApp1
                             {
                                 string username;
                                 string password;
+
                                 Console.Clear();
                                 Console.WriteLine("Enter your username: ");
                                 username = Console.ReadLine();
@@ -73,70 +75,158 @@ namespace ConsoleApp1
 
                                 foreach (UserDetails user in data.UserDetail)
                                 {
-                                    if (username == user.Username && password == user.Password)
+                                    while (true)
                                     {
-                                        Console.Clear();
-                                        Console.WriteLine("You login as " + user.Name);
+                                        if (username == user.Username && password == user.Password)
+                                        {
+                                            Console.Clear();
+                                            Console.WriteLine("You login as " + user.Name);
+                                            Console.WriteLine("Type 'L' to logout ");
 
-                                        while (true)
-                                        { 
-                                            var NowShowing = (from d in data.MovieList
-                                                              where d.MovieAvailability == true
-                                                              select d).ToList();
-
-                                            var table1 = new ConsoleTable("Id", "Movie Title", "Release Date", "Movie Available");
-
-                                            foreach (var item in NowShowing)
+                                            while (true)
                                             {
-                                                string input = "";
-                                                if (item.MovieAvailability)
+                                                var NowShowing = (from d in data.MovieList
+                                                                  where d.MovieAvailability == true
+                                                                  select d).ToList();
+
+                                                var table1 = new ConsoleTable("Id", "Movie Title", "Release Date", "Movie Available");
+
+                                                foreach (var item in NowShowing)
                                                 {
-                                                    input = "Now Showing";
-                                                }
-                                                table1.AddRow(item.MovieId, item.MovieTitle, item.ReleaseDate, input);
-                                            }
-
-                                            table1.Write();
-
-                                            Console.Write("\n Select a movie : ");
-
-                                            var Id = Convert.ToInt32(Console.ReadLine());
-
-                                            var selectMovie = (from d in data.MovieList
-                                                               where d.MovieId == Id && d.MovieAvailability == true
-                                                               select d).SingleOrDefault();
-
-                                            if (selectMovie != null)
-                                            {
-                                                Console.Clear();
-
-                                                while (true)
-                                                {
-                                                    Console.WriteLine("Your movie selection: " + selectMovie.MovieTitle);
-
-                                                    var table2 = new ConsoleTable("Id", "Date Start Time");
-
-                                                    foreach (var item in data.MovieTime)
+                                                    string input = "";
+                                                    if (item.MovieAvailability)
                                                     {
-                                                        table2.AddRow(item.Id, item.MovieTime);
+                                                        input = "Now Showing";
                                                     }
+                                                    table1.AddRow(item.MovieId, item.MovieTitle, item.ReleaseDate, input);
+                                                }
 
-                                                    table2.Write();
+                                                table1.Write();
 
-                                                    Console.Write("Enter ID to choose the movie time : ");
-                                                    Console.Write("\n Select a movie : ");
+                                                Console.Write("\n Select a movie : ");
 
-                                                    Id = Convert.ToInt32(Console.ReadLine());
+                                                //ConsoleKeyInfo userOption = Console.ReadKey(true);
 
-                                                    var selectMovie1 = (from d in data.MovieTime
-                                                                        where d.Id == Id
-                                                                        select d).SingleOrDefault();
+                                                //if (userOption.Key == ConsoleKey.L)
+                                                //{
+                                                //    break;
+                                                //}
 
-                                                    if (selectMovie1 != null)
+                                                string Id = Console.ReadLine();
+
+                                                if (Id == "L")
+                                                {
+                                                    Console.Clear();
+                                                    Console.WriteLine("Logging out...");
+                                                    Thread.Sleep(1000);
+                                                    Console.Clear();
+                                                    InitializeApp();
+                                                }
+                                                else
+                                                {
+                                                    var selectMovie = (from d in data.MovieList
+                                                                       where d.MovieId == Convert.ToInt32(Id) && d.MovieAvailability == true
+                                                                       select d).SingleOrDefault();
+
+                                                    if (selectMovie != null)
                                                     {
                                                         Console.Clear();
-                                                        CinemaHallSeat();
-                                                        break;
+                                                        while (true)
+                                                        {
+                                                            Console.WriteLine("Your movie selection: " + selectMovie.MovieTitle);
+
+                                                            var table2 = new ConsoleTable("Id", "Date Start Time");
+
+                                                            var _selectMovie = (from d in data.MovieTime
+                                                                                where d.MovieId == selectMovie.MovieId
+                                                                                select d).ToList();
+
+                                                            foreach (var item in _selectMovie)
+                                                            {
+                                                                table2.AddRow(item.Id, item.MovieTime);
+                                                            }
+
+                                                            table2.Write();
+
+                                                            Console.Write("Enter ID to choose the movie time : ");
+                                                            Console.Write("\n Select a movie / Type 'R' to return: ");
+
+                                                            Id = Console.ReadLine();
+
+                                                            if (Id == "R")
+                                                            {
+                                                                Console.Clear();
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                var selectMovieTime = (from d in data.MovieTime
+                                                                                       where d.Id == Convert.ToInt32(Id)
+                                                                                       select d).SingleOrDefault();
+
+                                                                if (selectMovieTime != null)
+                                                                {
+                                                                    Console.Clear();
+                                                                    Console.WriteLine(" Cinema Hall Seating");
+                                                                    //Console.WriteLine("Type 'R' to return");
+                                                                    Console.WriteLine("");
+                                                                    Console.WriteLine(" T: Taken     E:Empty");
+                                                                    Console.WriteLine("");
+
+                                                                    var selectMovieSeats = (from d in data.MovieSeats
+                                                                                            where d.MovieId == selectMovieTime.Id
+                                                                                            select d).ToList();
+
+                                                                    foreach (var item in selectMovieSeats)
+                                                                    {
+                                                                        Console.Write(" {0},{1} {2}", item.SeatRow, item.SeatColumn, item.SeatStatus);
+                                                                        item.Seat = item.SeatRow + "," + item.SeatColumn;
+
+                                                                        if (item.SeatColumn == 10)
+                                                                        {
+                                                                            Console.WriteLine("");
+                                                                        }
+                                                                    }
+                                                                    Console.WriteLine("");
+                                                                    while (true)
+                                                                    {
+                                                                        Console.Write(" Enter a seat number(row , column)/ Type 'R' to return: ");
+                                                                        string seatNo = Console.ReadLine();
+                                                                        Console.WriteLine("");
+
+                                                                        if (seatNo == "R")
+                                                                        {
+                                                                            Console.Clear();
+                                                                            break;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            var CheckMovieSeat = (from d in selectMovieSeats
+                                                                                                  where d.Seat == seatNo && d.SeatStatus == Status.E
+                                                                                                  select d).SingleOrDefault();
+
+                                                                            if (CheckMovieSeat != null)
+                                                                            {
+                                                                                Console.WriteLine("Your ticket has been purchased. ");
+                                                                                CheckMovieSeat.SeatStatus = Status.T;
+                                                                                break;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                Console.WriteLine("This seat is unavailable. Try again ");
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                }
+                                                                else
+                                                                {
+                                                                    Console.Clear();
+                                                                    Console.WriteLine("ID does not exist. Try again ");
+                                                                    continue;
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                     else
                                                     {
@@ -146,19 +236,13 @@ namespace ConsoleApp1
                                                     }
                                                 }
                                             }
-                                            else
-                                            {
-                                                Console.Clear();
-                                                Console.WriteLine("ID does not exist. Try again ");
-                                                continue;
-                                            }
                                         }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Login failed");
-                                        break;
-                                    }
+                                        else
+                                        {
+                                            Console.WriteLine("Login failed");
+                                            break;
+                                        }
+                                    }                                   
                                 }
                                 break;
                             }
@@ -173,50 +257,6 @@ namespace ConsoleApp1
                     Console.WriteLine("Please pick option 1-3");
                 }
             }
-
-        }
-        public static void CinemaHallSeat()
-        {
-            List<MovieSeats> seat = new List<MovieSeats>();
-
-            Console.WriteLine(" Cinema Hall Seating");
-            Console.WriteLine("");
-            Console.WriteLine(" T: Taken     E:Empty");
-            Console.WriteLine("");
-
-            foreach (var item in data.MovieSeats)
-            {
-                Console.Write(" {0},{1} {2}", item.SeatRow, item.SeatColumn, item.SeatStatus);
-                item.Seat = item.SeatRow + "," + item.SeatColumn;
-
-                if (item.SeatColumn == 10)
-                {
-                    Console.WriteLine("");
-                }
-            }
-            Console.WriteLine("");
-            while (true)
-            {
-                Console.Write(" Enter a seat number(row , column): ");
-                string seatNo = Console.ReadLine();
-                Console.WriteLine("");
-
-                var CheckMovieSeat = (from d in data.MovieSeats
-                                      where d.Seat == seatNo && d.SeatStatus == Status.E
-                                      select d).SingleOrDefault();
-
-                if (CheckMovieSeat != null)
-                {
-                    Console.WriteLine("Your ticket has been purchased. ");
-                    CheckMovieSeat.SeatStatus = Status.T;
-                    Console.Clear();
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("This seat is unavailable. Try again ");
-                }
-            }  
         }
     }
 }

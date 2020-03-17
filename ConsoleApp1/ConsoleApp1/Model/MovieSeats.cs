@@ -8,6 +8,7 @@ namespace ConsoleApp1
 {
     public class MovieSeats
     {
+        public int MovieId { get; set; }
         public Status SeatStatus { get; set; }
         public int SeatRow { get; set; }
         public int SeatColumn { get; set; }
