@@ -30,8 +30,8 @@ namespace ConsoleApp1
         public void GenerateMovieData()
         {
             MovieList.Add(new Movie() { MovieId = 101, MovieTitle = "Justice League", ReleaseDate = new DateTime(2012, 4, 12), MovieAvailability = true });
-            MovieList.Add(new Movie() { MovieId = 102, MovieTitle = "The Matrix", ReleaseDate = new DateTime(2012, 3, 15), MovieAvailability = false });
-            MovieList.Add(new Movie() { MovieId = 103, MovieTitle = "The Avengers", ReleaseDate = new DateTime(2012, 3, 20), MovieAvailability = true });
+            MovieList.Add(new Movie() { MovieId = 102, MovieTitle = "The Matrix", ReleaseDate = new DateTime(2012, 5, 14), MovieAvailability = false });
+            MovieList.Add(new Movie() { MovieId = 103, MovieTitle = "The Avengers", ReleaseDate = new DateTime(2012, 5, 14), MovieAvailability = true });
         }
         public void GenerateMovieTime()
         {
@@ -39,9 +39,9 @@ namespace ConsoleApp1
             MovieTime.Add(new MovieStartTime() { MovieId = 101, Id = 202, MovieTime = new DateTime(2012, 5, 15, 10, 30, 00) });
             MovieTime.Add(new MovieStartTime() { MovieId = 101, Id = 203, MovieTime = new DateTime(2012, 5, 15, 12, 30, 00) });
 
-            MovieTime.Add(new MovieStartTime() { MovieId = 102, Id = 204, MovieTime = new DateTime(2012, 5, 15, 06, 30, 00) });
-            MovieTime.Add(new MovieStartTime() { MovieId = 102, Id = 205, MovieTime = new DateTime(2012, 5, 15, 10, 30, 00) });
-            MovieTime.Add(new MovieStartTime() { MovieId = 102, Id = 206, MovieTime = new DateTime(2012, 5, 15, 12, 30, 00) });
+            //MovieTime.Add(new MovieStartTime() { MovieId = 102, Id = 204, MovieTime = new DateTime(2012, 5, 15, 06, 30, 00) });
+            //MovieTime.Add(new MovieStartTime() { MovieId = 102, Id = 205, MovieTime = new DateTime(2012, 5, 15, 10, 30, 00) });
+            //MovieTime.Add(new MovieStartTime() { MovieId = 102, Id = 206, MovieTime = new DateTime(2012, 5, 15, 12, 30, 00) });
 
             MovieTime.Add(new MovieStartTime() { MovieId = 103, Id = 207, MovieTime = new DateTime(2012, 5, 15, 06, 30, 00) });
             MovieTime.Add(new MovieStartTime() { MovieId = 103, Id = 208, MovieTime = new DateTime(2012, 5, 15, 10, 30, 00) });
@@ -59,9 +59,9 @@ namespace ConsoleApp1
                     {
                         Random rng = new Random();
                         Thread.Sleep(1);
-                        int k = rng.Next(0, 2);
+                        int k = rng.Next(0, 10);
 
-                        if (k == 0)
+                        if (k > 3)
                         {
                             seatstatus = Status.E;
                         }
@@ -69,8 +69,9 @@ namespace ConsoleApp1
                         {
                             seatstatus = Status.T;
                         }
+
                         Thread.Sleep(1);
-                        MovieSeats.Add(new MovieSeats() { MovieId = item.Id, SeatRow = i, SeatColumn = x, Seat = i.ToString() + "," + x.ToString(), SeatStatus = seatstatus });
+                        MovieSeats.Add(new MovieSeats() { MovieId = item.Id, SeatRow = i, SeatColumn = x, Seat = i + "," + x, SeatStatus = seatstatus });
                     }
                 }
             }
