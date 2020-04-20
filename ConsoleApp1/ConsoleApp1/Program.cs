@@ -64,14 +64,11 @@ namespace ConsoleApp1
 
                             while (true)
                             {
-                                string username;
-                                string password;
-
                                 Console.Clear();
                                 Console.WriteLine("Enter your username: ");
-                                username = Console.ReadLine();
+                                string username = Console.ReadLine();
                                 Console.WriteLine("Enter your password: ");
-                                password = Console.ReadLine();
+                                string password = Console.ReadLine();
 
                                 var user = (from d in data.UserDetail
                                             where d.Username == username && d.Password == password
@@ -83,10 +80,11 @@ namespace ConsoleApp1
                                     {
                                         Console.Clear();
                                         Console.WriteLine("You login as " + user.Name);
-                                        Console.WriteLine("Type 'L' to logout ");
 
                                         while (true)
                                         {
+                                            Console.WriteLine("Type 'L' to logout ");
+
                                             var NowShowing = (from d in data.MovieList
                                                               where d.MovieAvailability == true
                                                               select d).ToList();
@@ -133,8 +131,8 @@ namespace ConsoleApp1
                                                         var table2 = new ConsoleTable("Id", "Date Start Time");
 
                                                         var _selectMovieTime = (from d in data.MovieTime
-                                                                            where d.MovieId == selectMovie.MovieId
-                                                                            select d).ToList();
+                                                                                where d.MovieId == selectMovie.MovieId
+                                                                                select d).ToList();
 
                                                         foreach (var item in _selectMovieTime)
                                                         {
@@ -163,7 +161,6 @@ namespace ConsoleApp1
                                                             {
                                                                 Console.Clear();
                                                                 Console.WriteLine(" Cinema Hall Seating");
-                                                                //Console.WriteLine("Type 'R' to return");
                                                                 Console.WriteLine("");
                                                                 Console.WriteLine(" T: Taken     E:Empty");
                                                                 Console.WriteLine("");
@@ -174,7 +171,7 @@ namespace ConsoleApp1
 
                                                                 foreach (var item in selectMovieSeats)
                                                                 {
-                                                                    Console.Write(" {0},{1} {2}", item.SeatRow, item.SeatColumn, item.SeatStatus);
+                                                                    Console.Write(" {0},{1} {2} ", item.SeatRow, item.SeatColumn, item.SeatStatus);
                                                                     item.Seat = item.SeatRow + "," + item.SeatColumn;
 
                                                                     if (item.SeatColumn == 10)
@@ -182,6 +179,7 @@ namespace ConsoleApp1
                                                                         Console.WriteLine("");
                                                                     }
                                                                 }
+
                                                                 Console.WriteLine("");
                                                                 while (true)
                                                                 {
@@ -204,7 +202,7 @@ namespace ConsoleApp1
                                                                         if (CheckMovieSeat != null)
                                                                         {
                                                                             Console.Clear();
-                                                                            Console.WriteLine("Your ticket has been purchased. ");
+                                                                            Console.WriteLine(user.Name + ", your ticket has been purchased. ");
                                                                             CheckMovieSeat.SeatStatus = Status.T;
                                                                             break;
                                                                         }
@@ -243,6 +241,9 @@ namespace ConsoleApp1
                             }
                         case 3:
                             Environment.Exit(0);
+                            break;
+                        default:
+                            Console.WriteLine("Please pick option 1-3");
                             break;
                     }
                 }

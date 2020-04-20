@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1
+namespace CinemaApp.DomainEntity.Model
 {
-    public class Movie
+    public class MovieHall
     {
         public int Id { get; set; }
-
+        public int MovieHallId { get; set; }
         public int MovieId { get; set; }
-        public string MovieTitle { get; set; }
-        public DateTime ReleaseDate { get; set; }
-        public bool MovieAvailability { get; set; }
+        public int HallId { get; set; }
+        public DateTime MovieDateTime { get; set; }
     }
 }

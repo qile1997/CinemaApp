@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CinemaApp.DomainEntity.Model.Movie>
+
+@{
+    ViewBag.Title = "Index";
+}
+<head>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<h2 style="text-align:center">Movies</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieAvailability)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            @if (item.MovieAvailability == true)
+            {
+                <td>
+                    Now Showing
+                </td>
+            }
+            else
+            {
+                <td>
+                    Coming Soon
+                </td>
+            }
+        </tr>
+    }
+
+</table>
+
+@*@Html.ActionLink(" Login", "LoginPage", null, new { @class = "fa fa-arrow-right" })*@

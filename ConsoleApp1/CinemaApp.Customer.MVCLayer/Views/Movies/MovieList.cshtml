@@ -1,0 +1,42 @@
+﻿@model IEnumerable<CinemaApp.DomainEntity.Model.Movie>
+
+@{
+    Layout = "~/Views/Shared/LoginLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "MovieList";
+}
+
+<h2>Movie List</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieTitle)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieTitle)
+            </td>
+        </tr>
+    }
+
+</table>
+@using (Html.BeginForm())
+{
+    @Html.Label("Movie Id ")
+    @Html.DropDownList("MovieId", null, htmlAttributes: new { @class = "form-control", @style = "display:inline;margin-left:5px" })
+    <input style="display:inline" type="submit" value="Confirm" class="btn btn-default" />
+}
+

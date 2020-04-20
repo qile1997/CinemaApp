@@ -39,10 +39,6 @@ namespace ConsoleApp1
             MovieTime.Add(new MovieStartTime() { MovieId = 101, Id = 202, MovieTime = new DateTime(2012, 5, 15, 10, 30, 00) });
             MovieTime.Add(new MovieStartTime() { MovieId = 101, Id = 203, MovieTime = new DateTime(2012, 5, 15, 12, 30, 00) });
 
-            //MovieTime.Add(new MovieStartTime() { MovieId = 102, Id = 204, MovieTime = new DateTime(2012, 5, 15, 06, 30, 00) });
-            //MovieTime.Add(new MovieStartTime() { MovieId = 102, Id = 205, MovieTime = new DateTime(2012, 5, 15, 10, 30, 00) });
-            //MovieTime.Add(new MovieStartTime() { MovieId = 102, Id = 206, MovieTime = new DateTime(2012, 5, 15, 12, 30, 00) });
-
             MovieTime.Add(new MovieStartTime() { MovieId = 103, Id = 207, MovieTime = new DateTime(2012, 5, 15, 06, 30, 00) });
             MovieTime.Add(new MovieStartTime() { MovieId = 103, Id = 208, MovieTime = new DateTime(2012, 5, 15, 10, 30, 00) });
             MovieTime.Add(new MovieStartTime() { MovieId = 103, Id = 209, MovieTime = new DateTime(2012, 5, 15, 12, 30, 00) });
