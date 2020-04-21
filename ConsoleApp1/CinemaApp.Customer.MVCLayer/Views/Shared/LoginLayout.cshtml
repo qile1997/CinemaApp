@@ -21,7 +21,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink(" Cart", "OrderSummaryConfirmed", "Movies", new { area = "" }, new { @class = "fa fa-shopping-cart" })</li>
+                    <li>@Html.ActionLink(" Movies", "MovieList", "Movies", null, new { @class = "fa fa-film" })</li>
+                    <li>@Html.ActionLink(" Orders", "OrderSummaryConfirmed", "Movies", new { area = "" }, new { @class = "fa fa-shopping-cart" })</li>
+                    <li>@Html.ActionLink(" Transaction", "TransactionView", "Movies", new { area = "" }, new { @class = "fa fa-credit-card" })</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink(" Logout", "Logout", "Movies", null, new { @class = "fa fa-sign-out" })</li>

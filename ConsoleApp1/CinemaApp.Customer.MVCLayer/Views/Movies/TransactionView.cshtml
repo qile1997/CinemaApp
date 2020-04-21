@@ -1,0 +1,50 @@
+﻿@model IEnumerable<CinemaApp.DomainEntity.Model.Transactions>
+
+@{
+    ViewBag.Title = "TransactionPage";
+}
+
+@{
+    Layout = "~/Views/Shared/LoginLayout.cshtml";
+}
+
+<h2 style="display:inline-block">Transactions</h2>
+<h4 style="display:inline-block;float:right;padding:15px">Current Balance : RM @ViewBag.Balance</h4>
+<h4 style="display:inline;float:right;padding:15px">User : @ViewBag.Username</h4>
+<table class="table table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TransferMode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransferAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Transaction)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionDate)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransferMode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransferAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Transaction)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionDate)
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.ActionLink(" Back to previous page", null, null, null, new { href = Request.UrlReferrer, @class = "fa fa-arrow-left" })

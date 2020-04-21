@@ -5,6 +5,7 @@ using ConsoleTables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +18,8 @@ namespace CinemaApp.Admin
         {
             CinemaAdminRepository cinemaAdminRepo = new CinemaAdminRepository();
             TableRepository tableRepo = new TableRepository();
-
+            const string Controller = "Admin";
+            HttpResponseMessage response;
             while (true)
             {
                 Console.WriteLine("Admin/ Program Initialization");
@@ -41,32 +43,33 @@ namespace CinemaApp.Admin
                 switch (opt)
                 {
                     case "1":
-                        cinemaAdminRepo.ClearAllData();
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/ClearAllData").Result;
                         break;
                     case "0":
-                        cinemaAdminRepo.GenerateUserDetails();
-                        cinemaAdminRepo.GenerateMovies();
-                        cinemaAdminRepo.GenerateHalls();
-                        cinemaAdminRepo.GenerateMovieHalls();
-                        cinemaAdminRepo.GenerateMovieHallDetails();
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GenerateUserDetails").Result;
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GenerateMovies").Result;
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GenerateHalls").Result;
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GenerateMovieHalls").Result;
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GenerateMovieHallDetails").Result;
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/ClearUserCart").Result;
                         break;
                     case "0a":
-                        cinemaAdminRepo.GenerateUserDetails();
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GenerateUserDetails").Result;
                         break;
                     case "0b":
-                        cinemaAdminRepo.GenerateMovies();
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GenerateMovies").Result;
                         break;
                     case "0c":
-                        cinemaAdminRepo.GenerateHalls();
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GenerateHalls").Result;
                         break;
                     case "0d":
-                        cinemaAdminRepo.GenerateMovieHalls();
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GenerateMovieHalls").Result;
                         break;
                     case "0e":
-                        cinemaAdminRepo.GenerateMovieHallDetails();
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GenerateMovieHallDetails").Result;
                         break;
                     case "0f":
-                        cinemaAdminRepo.ClearUserCart();
+                        response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/ClearUserCart").Result;
                         break;
                     case "2":
                         tableRepo.PrintUserTable();

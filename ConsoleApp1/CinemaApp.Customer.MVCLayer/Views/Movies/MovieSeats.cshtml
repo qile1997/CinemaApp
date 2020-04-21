@@ -28,7 +28,7 @@
         padding: 6px;
         margin: 35px;
         text-align: center;
-        background-color: blanchedalmond;
+        background-color: peachpuff;
         height: 45px;
     }
 
@@ -63,6 +63,10 @@
 </style>
 
 <h2>Movie Seats</h2>
+
+<hr />
+<h4>User : @ViewBag.Username</h4>
+<h4>Current Balance : RM @ViewBag.Balance</h4>
 <hr />
 <h4>Hall No : @ViewBag.HallNo</h4>
 <h4>Movie Title : @ViewBag.MovieTitle</h4>
@@ -105,7 +109,7 @@
             <div class="flex-container1">
                 <dl>
                     <dt style="margin-top:-5px;margin-left:6px">
-                       T
+                        T
                     </dt>
                     <dt style="margin-left:1px">
                         @item.Seat
@@ -147,20 +151,20 @@
 @*<div style="font-size:20px;margin-left:10px">Seats</div>*@
 
 @*<ol>
-    @foreach (var item in Model)
-    {
-        if (item.UserDetailsId == ViewBag.UserDetailsId && item.SeatStatus == CinemaApp.DomainEntity.Model.Status.A)
+        @foreach (var item in Model)
         {
-            <li>@item.Seat</li>
+            if (item.UserDetailsId == ViewBag.UserDetailsId && item.SeatStatus == CinemaApp.DomainEntity.Model.Status.A)
+            {
+                <li>@item.Seat</li>
+            }
         }
-    }
-</ol>*@
+    </ol>*@
 
 
 @*<div style="font-size:20px">Total Price (RM) @ViewBag.TotalPrice</div>*@
 
 @Html.ActionLink(" Movie Halls", "MovieHalls", null, htmlAttributes: new { @class = "fa fa-arrow-left" })
-@Html.ActionLink(" Confirm", "OrderSummary", null, htmlAttributes: new { @class = "fa fa-arrow-right cfmbtn", @style = "float:right" })
+@Html.ActionLink(" Cart", "OrderSummary", null, htmlAttributes: new { @class = "fa fa-arrow-right cfmbtn", @style = "float:right" })
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>

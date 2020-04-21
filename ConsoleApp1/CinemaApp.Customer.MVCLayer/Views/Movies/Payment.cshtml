@@ -1,0 +1,70 @@
+﻿@model CinemaApp.DomainEntity.Model.Transactions
+
+@{
+    ViewBag.Title = "TransactionPage";
+}
+
+<h2>Payment</h2>
+
+@{
+    int TotalAmount = ViewBag.TotalAmount;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Transfer Mode ", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.TransferMode, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TransferMode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Transfer Amount (RM)", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("TotalAmount", TotalAmount.ToString(), new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", step = "0.01" } })
+                @Html.ValidationMessageFor(model => model.TransferAmount, "Instant Transfer is RM0.11 fee. Interbank Giro is RM0.00 fee.", new { @class = "text-warning" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Confirm" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $(function () {
+            $("#TransferMode").change(function () {
+                var TotalAmount = $("#TotalAmount").val()
+                var TransferMode = $("#TransferMode").val();
+
+                _TotalAmount = parseFloat(TotalAmount);
+
+                if (TransferMode == 1) {
+                    _TotalAmount = parseFloat(TotalAmount) + 0.11;
+                } else {
+                    _TotalAmount = parseFloat(TotalAmount) - 0.11;
+                }
+
+                _TotalAmount = _TotalAmount.toFixed(2);
+                $("#TotalAmount").val(_TotalAmount);
+            })
+        })
+
+    })
+</script>

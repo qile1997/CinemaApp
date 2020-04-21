@@ -8,26 +8,29 @@
     ViewBag.Title = "OrderSummary";
 }
 
-<h2>Final Order Summary</h2>
-
+<h2 style="display:inline-block">Cart</h2>
+<h4 style="display:inline-block;float:right;padding:15px">Current Balance : RM @ViewBag.Balance</h4>
+<h4 style="display:inline;float:right;padding:15px">User : @ViewBag.Username</h4>
 <table class="table table-striped">
     <tr>
         <th>
-            Movie Hall Id
+            @Html.DisplayNameFor(model => model.MovieHallsId)
         </th>
         <th>
-            Hall No
+            @Html.DisplayNameFor(model => model.HallNo)
         </th>
         <th>
-            Movie Title
+            @Html.DisplayNameFor(model => model.MovieTitle)
         </th>
         <th>
-            Ticket Price
+            @Html.DisplayNameFor(model => model.MovieDateTime)
         </th>
         <th>
-            Seat
+            Price (RM)
         </th>
-
+        <th>
+            Seat (R,C)
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -43,6 +46,9 @@
                 @Html.DisplayFor(modelItem => item.MovieTitle)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.MovieDateTime)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.TicketPrice)
             </td>
             <td>
@@ -50,17 +56,18 @@
             </td>
         </tr>
     }
-    <tr>    
+    <tr>
         <td style="font-weight:bold">Total Amount</td>
         <td></td>
         <td></td>
-        <td>@Model.Sum(i=>i.TicketPrice)</td>
+        <td>    </td>
+        <td>@Model.Sum(i => i.TicketPrice)</td>
         <td></td>
     </tr>
 </table>
 @Html.ActionLink(" Movie Seats", "MovieSeats", null, htmlAttributes: new { @class = "fa fa-arrow-left" })
 @if (ViewBag.Count > 0)
 {
-    @Html.ActionLink(" Confirm", "Confirm", null, htmlAttributes: new { @class = "fa fa-arrow-right", @style = "float:right" })
+    @Html.ActionLink(" Confirm", "Payment", null, htmlAttributes: new { @class = "fa fa-arrow-right", @style = "float:right" })
 }
 

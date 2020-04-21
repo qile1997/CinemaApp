@@ -58,6 +58,7 @@
     <Compile Include="Model\Movie.cs" />
     <Compile Include="Model\MovieHall.cs" />
     <Compile Include="Model\MovieHallDetails.cs" />
+    <Compile Include="Model\Transactions.cs" />
     <Compile Include="Model\UserCart.cs" />
     <Compile Include="Model\UserDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

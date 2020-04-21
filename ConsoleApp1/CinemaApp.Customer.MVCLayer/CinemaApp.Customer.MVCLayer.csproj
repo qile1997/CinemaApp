@@ -188,6 +188,9 @@
     <Content Include="Views\Shared\LoginLayout.cshtml" />
     <Content Include="Views\Movies\OrderSummary.cshtml" />
     <Content Include="Views\Movies\OrderSummaryConfirmed.cshtml" />
+    <Content Include="Views\Movies\Payment.cshtml" />
+    <Content Include="Views\Movies\TransactionView.cshtml" />
+    <Content Include="Views\Movies\RemoveOrderSummaryConfirmed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -54,6 +54,8 @@ namespace CinemaApp.Persistance.Repository
             db.MovieHallDetails.RemoveRange(removemoviehalldetails);
             var removehall = db.Hall.ToList();
             db.Hall.RemoveRange(removehall);
+            var removetransactions = db.Transactions.ToList();
+            db.Transactions.RemoveRange(removetransactions);
             Save();
         }
 
@@ -214,10 +216,12 @@ namespace CinemaApp.Persistance.Repository
             user.Name = "John";
             user.Username = "123";
             user.Password = "123";
+            user.Balance = 200;
             AddUserDetails(user);
             user.Name = "Mike";
             user.Username = "321";
             user.Password = "321";
+            user.Balance = 100;
             AddUserDetails(user);
         }
         public void ClearUserCart()
@@ -225,6 +229,20 @@ namespace CinemaApp.Persistance.Repository
             foreach (var item in db.MovieHallDetails)
             {
                 item.UserDetailsId = null;
+                if (item.SeatStatus == Status.O || item.SeatStatus == Status.A)
+                {
+                    Random rng = new Random();
+                    int k = rng.Next(0, 10);
+                    Thread.Sleep(5);
+                    if (k > 3)
+                    {
+                        item.SeatStatus = Status.E;
+                    }
+                    else
+                    {
+                        item.SeatStatus = Status.T;
+                    }
+                }
             }
             var cart = db.UserCarts.ToList();
             db.UserCarts.RemoveRange(cart);

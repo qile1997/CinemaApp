@@ -21,6 +21,7 @@ namespace CinemaApp.Persistance
         public DbSet<MovieHallDetails> MovieHallDetails { get; set; }
         public DbSet<UserDetails> UserDetails { get; set; }
         public DbSet<UserCart> UserCarts { get; set; }
+        public DbSet<Transactions> Transactions { get; set; }
 
         // Add a DbSet for each entity type that you want to include in your model. For more information 
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
