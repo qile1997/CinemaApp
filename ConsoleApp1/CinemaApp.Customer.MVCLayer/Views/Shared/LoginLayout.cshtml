@@ -20,6 +20,9 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink(" Cart", "OrderSummaryConfirmed", "Movies", new { area = "" }, new { @class = "fa fa-shopping-cart" })</li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink(" Logout", "Logout", "Movies", null, new { @class = "fa fa-sign-out" })</li>
                 </ul>

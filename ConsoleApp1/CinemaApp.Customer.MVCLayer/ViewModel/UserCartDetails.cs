@@ -11,9 +11,9 @@ namespace CinemaApp.Customer.MVCLayer.ViewModel
         public int Id { get; set; }
         public int TicketPrice { get; set; }
         public int MovieHallsId { get; set; }
-        public int UserDetailsId { get; set; }
+        public string MovieTitle { get; set; }
         public string Seat { get; set; }
-        public int MovieId { get; set; }
-        public IEnumerable<MovieHallDetails> MovieHallDetails { get; set; }
+        public string HallNo { get; set; }
+        public IEnumerable<UserCart> _UserCart { get; set; }
     }
 }

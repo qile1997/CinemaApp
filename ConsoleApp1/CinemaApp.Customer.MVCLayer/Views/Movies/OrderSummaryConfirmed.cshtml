@@ -1,0 +1,80 @@
+﻿@model IEnumerable<CinemaApp.DomainEntity.Model.UserCart>
+
+@{
+    Layout = "~/Views/Shared/LoginLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "OrderSummary";
+}
+
+<h2 style="display:inline-block">Confirmed Orders</h2>
+<h4 style="display:inline;float:right;padding:5px">User : @ViewBag.Username</h4>
+<table class="table table-striped">
+    <tr>
+        <th>
+            Movie Hall Id
+        </th>
+        <th>
+            Hall No
+        </th>
+        <th>
+            Movie Title
+        </th>
+        <th>
+            Ticket Price
+        </th>
+        <th>
+            Seat
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieHallsId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HallNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seat)
+            </td>
+            <td>
+                <button class="operator btn btn-danger btn-xs" value="x" data-id="@item.Id">x</button>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.ActionLink(" Back to previous page", null, null, null, new { href = Request.UrlReferrer, @class = "fa fa-arrow-left" })
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".operator").click(function (operator) {
+            var dataId = $(this).attr("data-id");
+            var operation = operator.target.value;
+            console.log(operation);
+            $.ajax({
+                type: "POST",
+                url: "/Movies/RemoveOrderSummaryConfirmed",
+                data: { _operator: operation, Id: dataId },
+                success: function () {
+                    location.reload();
+                }
+            })
+        })
+    })
+</script>

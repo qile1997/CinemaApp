@@ -48,6 +48,23 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         }
         public ActionResult Logout()
         {
+            int UserDetailsId = Convert.ToInt32(Session["UserId"]);
+            var RemoveUnconfirmedOrders = db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList();
+            db.UserCarts.RemoveRange(RemoveUnconfirmedOrders);
+
+            var _RemoveUnconfirmedOrders = (from mhd in db.MovieHallDetails
+                                            join uc in db.UserCarts
+                                             on mhd.Seat equals uc.Seat
+                                            where mhd.UserDetailsId == UserDetailsId && uc.ConfirmCart == false && uc.UserDetailsId == UserDetailsId
+                                            select mhd).ToList();
+
+            foreach (var item in _RemoveUnconfirmedOrders)
+            {
+                item.SeatStatus = Status.E;
+                item.UserDetailsId = null;
+            }
+
+            db.SaveChanges();
             Session.Abandon();
             return RedirectToAction("Index");
         }
@@ -111,13 +128,14 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
                                    where mh.HallId == filterHallNo.HallId && mh.MovieHallId == MovieHallId
                                    select mh).SingleOrDefault();
 
-            var totalPrice = db.UserCarts.Where(d => d.UserDetailsId == UserDetailsId && d.MovieHallsId==MovieHallId).ToList();
+            var totalPrice = db.UserCarts.Where(d => d.UserDetailsId == UserDetailsId && d.MovieHallsId == MovieHallId && d.ConfirmCart == false).ToList();
 
             ViewBag.HallNo = filterHallNo.HallNo;
             ViewBag.MovieTitle = filterMovieTitle.MovieTitle;
             ViewBag.MovieDateTime = filterMovieTime.MovieDateTime.ToString("h:mm tt");
             ViewBag.TicketPrice = filterMovieTitle.TicketPrice;
-            ViewBag.TotalPrice = filterMovieTitle.TicketPrice * totalPrice.Count();
+            //ViewBag.TotalPrice = filterMovieTitle.TicketPrice * totalPrice.Count();
+            ViewBag.UserDetailsId = UserDetailsId;
             return View(movieSeats);
         }
 
@@ -132,38 +150,91 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
 
             var filterPrice = db.Movie.Where(d => d.MovieId == MovieId).SingleOrDefault();
             var replaceEmptyOrTakenSeat = db.MovieHallDetails.Where(d => d.Seat == Seat && d.MovieHallId == MovieHallId).SingleOrDefault();
+            var MovieTitle = db.Movie.Where(d => d.MovieId == MovieId).SingleOrDefault();
+            var filterHallNo = (from h in db.Hall
+                                join mh in db.MovieHall on h.HallId equals mh.HallId
+                                where mh.MovieHallId == MovieHallId
+                                select h).SingleOrDefault();
 
             if (replaceEmptyOrTakenSeat.UserDetailsId == null)
             {
-                replaceEmptyOrTakenSeat.SeatStatus = Status.T;
+                replaceEmptyOrTakenSeat.SeatStatus = Status.A;
                 replaceEmptyOrTakenSeat.UserDetailsId = UserDetailsId;
                 db.SaveChanges();
                 UserCart cart = new UserCart();
                 cart.UserDetailsId = UserDetailsId;
                 cart.MovieHallsId = MovieHallId;
-                cart.MovieId = MovieId;
+                cart.MovieTitle = MovieTitle.MovieTitle;
+                cart.HallNo = filterHallNo.HallNo;
                 cart.TicketPrice = filterPrice.TicketPrice;
                 cart.Seat = Seat;
+                cart.ConfirmCart = false;
                 db.UserCarts.Add(cart);
                 db.SaveChanges();
                 return Json(JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var removeCart = db.UserCarts.Where(d => d.Seat == Seat && d.UserDetailsId == UserDetailsId && d.MovieHallsId == MovieHallId && d.MovieId == MovieId).SingleOrDefault();
+                var removeCart = db.UserCarts.Where(d => d.Seat == Seat && d.UserDetailsId == UserDetailsId && d.MovieHallsId == MovieHallId).SingleOrDefault();
                 db.UserCarts.Remove(removeCart);
                 replaceEmptyOrTakenSeat.SeatStatus = Status.E;
                 replaceEmptyOrTakenSeat.UserDetailsId = null;
                 db.SaveChanges();
                 return Json(JsonRequestBehavior.AllowGet);
-
             }
-
         }
+        [HttpPost]
+        public ActionResult RemoveOrderSummaryConfirmed(string _operator, int Id)
+        {
+            AppDbContext db = new AppDbContext();
+            if (_operator == "x")
+            {
+                var cart = db.UserCarts.Where(d => d.Id == Id).SingleOrDefault();
+                var MovieHallDetails = db.MovieHallDetails.Where(d => d.MovieHallId == cart.MovieHallsId && d.UserDetailsId == cart.UserDetailsId).SingleOrDefault();
+                MovieHallDetails.SeatStatus = Status.E;
+                MovieHallDetails.UserDetailsId = null;
+                db.UserCarts.Remove(cart);
+                db.SaveChanges();
+            }
+            return Json(JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult OrderSummaryConfirmed()
+        {
+            int UserDetailsId = Convert.ToInt32(Session["UserId"]);
+            var OrderSummaryConfirmed = db.UserCarts.Where(d => d.ConfirmCart == true && d.UserDetailsId == UserDetailsId).ToList();
+            var Name = db.UserDetails.Where(d => d.Id == UserDetailsId).SingleOrDefault();
+            ViewBag.Username = Name.Name;
+            return View(OrderSummaryConfirmed);
+        }
+
         public ActionResult OrderSummary()
         {
-            return View(db.UserCarts.ToList());
+            int UserDetailsId = Convert.ToInt32(Session["UserId"]);
+            var OrderSummary = db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList();
+            ViewBag.Count = OrderSummary.Count();
+            return View(OrderSummary);
         }
+        public ActionResult Confirm()
+        {
+            int UserDetailsId = Convert.ToInt32(Session["UserId"]);
+            var OrderSummary = db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList();
+            var _OrderSummary = db.MovieHallDetails.Where(d => d.UserDetailsId == UserDetailsId).ToList();
+
+            foreach (var item in _OrderSummary)
+            {
+                item.SeatStatus = Status.O;
+                db.SaveChanges();
+            }
+
+            foreach (var item in OrderSummary)
+            {
+                item.ConfirmCart = true;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("MovieList");
+        }
+
         public ActionResult ViewCart()
         {
             return View();

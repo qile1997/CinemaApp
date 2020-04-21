@@ -12,8 +12,9 @@ namespace CinemaApp.DomainEntity.Model
         public int TicketPrice { get; set; }
         public int MovieHallsId { get; set; }
         public int UserDetailsId { get; set; }
+        public string HallNo { get; set; }
         public string Seat { get; set; }
-        public int MovieId { get; set; }
+        public string MovieTitle { get; set; }
         public bool ConfirmCart { get; set; }
     }
 }
