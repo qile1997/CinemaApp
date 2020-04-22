@@ -7,7 +7,8 @@
 <h2>Payment</h2>
 
 @{
-    int TotalAmount = ViewBag.TotalAmount;
+    double TotalAmount = ViewBag.TotalAmount;
+    double Balance = ViewBag.Balance;
 }
 
 @using (Html.BeginForm())
@@ -55,6 +56,9 @@
                 debugger
                 if (TransferMode == 1) {
                     _TotalAmount = parseFloat(TotalAmount) + 0.11;
+                    if (_TotalAmount >@ViewBag.Balance) {
+                        alert('Please use IBG transfer. Not enough balance.')
+                    }
                 } else {
                     _TotalAmount = parseFloat(TotalAmount) - 0.11;
                 }

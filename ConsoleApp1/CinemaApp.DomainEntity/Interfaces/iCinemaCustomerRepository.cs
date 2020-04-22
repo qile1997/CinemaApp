@@ -9,18 +9,36 @@ namespace CinemaApp.DomainEntity.Interfaces
 {
     public interface iCinemaCustomerRepository
     {
-        //Customer
-        IEnumerable<Movie> GetMovies();
+        //UserDetails
         UserDetails LoginCheck(UserDetails user);
+        UserDetails GetUserDetails(int UserDetailsId);
+        void UpdateUserDetails(UserDetails user);
+        double TicketTotal(int UserDetailsId);
+        //Movie
+        IEnumerable<Movie> GetMovies();
         IEnumerable<Movie> GetAvailableMovies();
+        Movie GetMovieData(int MovieId);
+        //Hall
+        Hall GetHallData(int MovieHallId);
+        //MovieHall
         IEnumerable<MovieHall> GetSelectedMovies(int MovieId);
+        MovieHall GetMovieHallData(int MovieHallId);
+        //MovieHallDetails
+        IEnumerable<MovieHallDetails> GetMovieHallDetails();
+        MovieHallDetails GetAMovieHallDetail(int Id);
         IEnumerable<MovieHallDetails> GetMovieSeats(int MovieHallId);
         IEnumerable<MovieHallDetails> GetAvailableSeats(int MovieHallId);
-        //void ReplaceEmptySeats(string Seat, int MovieHallId, int user, int MovieId);
-        //void ReplaceEmptySeats(string Seat, int MovieHallId);
+        void UpdateMovieHallDetailsSeat(MovieHallDetails mhd);
+        MovieHallDetails replaceEmptyOrTakenSeat(string Seat, int MovieHallId);
+        //UserCart
+        UserCart GetCart(int Id);
         void AddCart(UserCart cart);
-        void Save();
+        void DeleteCart(UserCart cart);
         IEnumerable<UserCart> UpdateCart(string Seat);
+        //Transactions
+        IEnumerable<Transactions> GetTransactions();
+        void AddTransaction(Transactions trans);
+        void Save();
 
     }
 }

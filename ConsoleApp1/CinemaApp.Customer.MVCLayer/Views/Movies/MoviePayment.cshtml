@@ -6,10 +6,10 @@
 
 <h2>MoviePayment</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>MoviePaymentDetails</h4>
         <hr />
@@ -57,3 +57,28 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $(function () {
+            $("#TransferMode").change(function () {
+                var TotalAmount = $("#TransferAmount").val()
+                var TransferMode = $("#TransferMode").val();
+
+                _TotalAmount = parseFloat(TotalAmount);
+                debugger
+                if (TransferMode == 1) {
+                    _TotalAmount = parseFloat(TotalAmount) + 0.11;
+                } else {
+                    _TotalAmount = parseFloat(TotalAmount) - 0.11;
+                }
+
+                _TotalAmount = _TotalAmount.toFixed(2);
+                $("#TransferAmount").val(_TotalAmount);
+            })
+        })
+
+    })
+</script>

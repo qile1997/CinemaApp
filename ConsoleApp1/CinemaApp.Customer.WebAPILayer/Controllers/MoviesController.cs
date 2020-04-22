@@ -18,13 +18,13 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         {
             return cinemaRepo.GetMovies();
         }
-        [Route("api/Movies/LoginCheck")]
-        [HttpPost]
-        public UserDetails LoginCheck(UserDetails user)
+        [Route("api/Movies/GetUserDetails/{UserDetailsId}")]
+        [HttpGet]
+        public UserDetails GetUserDetails(int UserDetailsId)
         {
-            return cinemaRepo.LoginCheck(user);
+            return cinemaRepo.GetUserDetails(UserDetailsId);
         }
-        [Route("api/Movies/GetMovies")]
+        [Route("api/Movies/GetAvailableMovies")]
         [HttpGet]
         public IEnumerable<Movie> GetAvailableMovies()
         {
@@ -42,32 +42,48 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         {
             return cinemaRepo.GetMovieSeats(MovieHallId);
         }
-        //[Route("api/Movies/GetAvailableSeats/{MovieHallId:int}")]
+
+        [Route("api/Movies/GetHallData/{MovieHallId:int}")]
+        [HttpGet]
+        public Hall GetHallData(int MovieHallId)
+        {
+            return cinemaRepo.GetHallData(MovieHallId);
+        }
+        [Route("api/Movies/GetMovieHallData/{MovieHallId:int}")]
+        [HttpGet]
+        public MovieHall GetMovieHallData(int MovieHallId)
+        {
+            return cinemaRepo.GetMovieHallData(MovieHallId);
+        }
+        //[Route("api/Movies/GetMovieData/{MovieId:int}")]
         //[HttpGet]
-        //public IEnumerable<MovieHallDetails> GetAvailableSeats(int MovieHallId)
+        //public Movie GetMovieData(int MovieId)
         //{
-        //    return cinemaRepo.GetAvailableSeats(MovieHallId);
+        //    return cinemaRepo.GetMovieData(MovieId);
         //}
-        //[Route("api/Movies/ReplaceEmptySeat/Seat/{MovieHallId:int}/{user:int}/{MovieId:int}")]
+     
+        [Route("api/Movies/UpdateSeatToCart")]
+        [HttpPost]
+        public void UpdateSeatToCart(MovieHallDetails Id)
+        {
+            cinemaRepo.UpdateMovieHallDetailsSeat(Id);
+        }
+        //[Route("api/Movies/GetMovieSeatDetails/{MovieHallId:int}/Seat")]
         //[HttpPost]
-        //public void ReplaceEmptySeat(string Seat, int MovieHallId, int user, int MovieId)
+        //public MovieHallDetails replaceEmptyOrTakenSeat(int MovieHallId,string Seat)
         //{
-        //    cinemaRepo.ReplaceEmptySeats(Seat, MovieHallId, user, MovieId);
-        //}
-        //[Route("api/Movies/ReplaceEmptySeat/EmptySeats/{MovieHallId:int}")]
-        //[HttpGet]
-        //public void ReplaceEmptySeat(string EmptySeats, int MovieHallId)
-        //{
-        //    //cinemaRepo.ReplaceEmptySeats(EmptySeats, MovieHallId);
+        //    return cinemaRepo.replaceEmptyOrTakenSeat(Seat, MovieHallId);
         //}
 
-        //// GET: api/Movies/5
-        //public Movie Get(int id)
-        //{
-        //    Movie movie = db.Movie.Find(id);
-        //    return movie;
-        //}
-
+        public Movie Get(int id)
+        {
+            Movie md = cinemaRepo.GetMovieData(id);
+            return md;
+        }
+        public void Put(MovieHallDetails mhd)
+        {
+            cinemaRepo.UpdateMovieHallDetailsSeat(mhd);
+        }
         //// POST: api/Movies
         //public void Post([FromBody]string value)
         //{
