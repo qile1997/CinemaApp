@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<CinemaApp.DomainEntity.Model.UserCart>
 
 @{
-    Layout = "~/Views/Shared/LoginLayout.cshtml";
+    Layout = "~/Views/Shared/MovieSeatsLayout.cshtml";
 }
 
 @{
@@ -68,6 +68,6 @@
 @Html.ActionLink(" Movie Seats", "MovieSeats", null, htmlAttributes: new { @class = "fa fa-arrow-left" })
 @if (ViewBag.Count > 0)
 {
-    @Html.ActionLink(" Confirm", "Payment", null, htmlAttributes: new { @class = "fa fa-arrow-right", @style = "float:right" })
+    @Html.ActionLink(" Payment", "Payment", null, htmlAttributes: new { @class = "fa fa-arrow-right", @style = "float:right" })
 }
 

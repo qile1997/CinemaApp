@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<CinemaApp.DomainEntity.Model.MovieHallDetails>
 
 @{
-    Layout = "~/Views/Shared/LoginLayout.cshtml";
+    Layout = "~/Views/Shared/MovieSeatsLayout.cshtml";
 }
 
 @{
@@ -55,6 +55,17 @@
         background-color: darkorange;
         height: 45px;
     }
+    .flex-container4 {
+        float: left;
+        display: flex;
+        width: 40px;
+        border: 1px solid;
+        padding: 6px;
+        margin: 35px;
+        text-align: center;
+        background-color: darkorange;
+        height: 45px;
+    }
 
     table, th, td {
         /*border:1px solid black;*/
@@ -66,14 +77,17 @@
 
 <hr />
 <h4>User : @ViewBag.Username</h4>
-<h4>Current Balance : RM @ViewBag.Balance</h4>
+<h4>Current Balance : RM @ViewBag.CurrentBalance</h4>
+<h4>Remaining Balance : RM @ViewBag.RemainingBalance</h4>
 <hr />
 <h4>Hall No : @ViewBag.HallNo</h4>
 <h4>Movie Title : @ViewBag.MovieTitle</h4>
 <h4>Movie Start Time : @ViewBag.MovieDateTime</h4>
 <h4>Ticket Price (RM) : @ViewBag.TicketPrice</h4>
 <h5>T : Taken   |   E : Empty   |   O : Ordered  | A : Add To Cart</h5>
+<p class="text-warning">Choose your payment method to complete your ticket purchase in 5 mins. Otherwise , your seat will be released to other customers</p>
 <hr />
+<h4>  ---------------------------------------------------------------------------------------[Screen]-------------------------------------------------------------------------------------------</h4>
 <div>
     @foreach (var item in Model)
 
@@ -83,7 +97,7 @@
             <button class="flex-container Seat" id="@item.Seat">
                 <dl>
                     <dt style="margin-top:-5px;margin-left:6px">
-                        @item.SeatStatus
+                        E
                     </dt>
                     <dt style="margin-left:1px">
                         @item.Seat
@@ -117,12 +131,35 @@
                 </dl>
             </div>
         }
+        else if (item.SeatStatus == CinemaApp.DomainEntity.Model.Status.A && item.UserDetailsId != ViewBag.UserDetailsId)
+        {
+            <div class="flex-container1">
+                <dl>
+                    <dt style="margin-top:-5px;margin-left:6px">
+                        T
+                    </dt>
+                    <dt style="margin-left:1px">
+                        @item.Seat
+                    </dt>
+                </dl>
+            </div>
+            @*<button class="flex-container Seat" id="@item.Seat">
+                    <dl>
+                        <dt style="margin-top:-5px;margin-left:6px">
+                            E
+                        </dt>
+                        <dt style="margin-left:1px">
+                            @item.Seat
+                        </dt>
+                    </dl>
+                </button>*@
+        }
         else if (item.SeatStatus == CinemaApp.DomainEntity.Model.Status.T)
         {
             <div class="flex-container1">
                 <dl>
                     <dt style="margin-top:-5px;margin-left:6px">
-                        @item.SeatStatus
+                        T
                     </dt>
                     <dt style="margin-left:1px">
                         @item.Seat
@@ -177,8 +214,13 @@
                 type: "POST",
                 url: "/Movies/UpdateCart",
                 data: { Seat: dataId },
-                success: function () {
-                    location.reload();
+                success: function (response) {
+                    if (response) {
+                        alert(response.Msg)
+                        location.reload();
+                    } else {
+                        location.reload();
+                    }
                 }
             })
         })

@@ -10,7 +10,7 @@ namespace CinemaApp.DomainEntity.Model
     public class Transactions
     {
         public int Id { get; set; }
-        [Display(Name ="Transfer Mode")]
+        [Display(Name = "Transfer Mode")]
         public Transfer TransferMode { get; set; }
         public int UserDetailsId { get; set; }
         [Display(Name = "Transfer Amount(RM)")]
@@ -19,10 +19,12 @@ namespace CinemaApp.DomainEntity.Model
         public TransactionType Transaction { get; set; }
         [Display(Name = "Transaction Date")]
         public DateTime TransactionDate { get; set; }
+        [StringLength(15, ErrorMessage = "Maximum length 15 chracters.")]
+        public string Remarks { get; set; }
     }
     public enum Transfer
     {
-        
+
         [Display(Name = "Interbank Giro Transfer")] IBG,
         [Display(Name = "Instant Transfer")] IBGT
     }

@@ -25,6 +25,9 @@
         <th>
             @Html.DisplayNameFor(model => model.TransactionDate)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -42,9 +45,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TransactionDate)
             </td>
+            <td>
+                @Html.DisplayFor(model => item.Remarks)
+            </td>
         </tr>
     }
 
 </table>
+<h4 style="display:inline;float:right">@Html.ActionLink("Clear History", "ClearHistory")</h4>
 
 @Html.ActionLink(" Back to previous page", null, null, null, new { href = Request.UrlReferrer, @class = "fa fa-arrow-left" })

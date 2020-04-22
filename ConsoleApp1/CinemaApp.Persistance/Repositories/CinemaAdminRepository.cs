@@ -81,7 +81,7 @@ namespace CinemaApp.Persistance.Repository
 
         public void GenerateMovieHallDetails()
         {
-            Status seatstatus;
+            //Status seatstatus;
 
             var MovieHallData = from h in db.Hall
                                 join mh in db.MovieHall on h.HallId equals mh.HallId
@@ -101,22 +101,22 @@ namespace CinemaApp.Persistance.Repository
                 {
                     for (int x = 1; x <= item.TotalColumn; x++)
                     {
-                        Random rng = new Random();
-                        int k = rng.Next(0, 10);
-                        Thread.Sleep(5);
-                        if (k > 3)
-                        {
-                            seatstatus = Status.E;
-                        }
-                        else
-                        {
-                            seatstatus = Status.T;
-                        }
-                        Thread.Sleep(5);
+                        //Random rng = new Random();
+                        //int k = rng.Next(0, 10);
+                        //Thread.Sleep(5);
+                        //if (k > 3)
+                        //{
+                        //    seatstatus = Status.E;
+                        //}
+                        //else
+                        //{
+                        //    seatstatus = Status.T;
+                        //}
+                        //Thread.Sleep(5);
                         MovieHallDetails moviehalldetails = new MovieHallDetails();
                         moviehalldetails.MovieHallId = item.MovieHallId;
                         moviehalldetails.Seat = i + "," + x;
-                        moviehalldetails.SeatStatus = seatstatus;
+                        moviehalldetails.SeatStatus = Status.E;
                         moviehalldetails.UserDetailsId = null;
                         db.MovieHallDetails.Add(moviehalldetails);
                     }
@@ -216,7 +216,7 @@ namespace CinemaApp.Persistance.Repository
             user.Name = "John";
             user.Username = "123";
             user.Password = "123";
-            user.Balance = 200;
+            user.Balance = 12;
             AddUserDetails(user);
             user.Name = "Mike";
             user.Username = "321";

@@ -13,7 +13,7 @@
 <h4 style="display:inline;float:right;padding:15px">User : @ViewBag.Username</h4>
 
 <table class="table table-striped">
-    <tr>
+    <tr style="text-align:center">
         <th>
             @Html.DisplayNameFor(model => model.MovieHallsId)
         </th>
@@ -32,14 +32,14 @@
         <th>
             Seat (R,C)
         </th>
-        <th>
-
+        <th style="text-align:center">
+            Cancel Order
         </th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr> 
             <td>
                 @Html.DisplayFor(modelItem => item.MovieHallsId)
             </td>
@@ -58,7 +58,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Seat)
             </td>
-            <td>
+            <td style="text-align:center">
                 @Html.ActionLink("x", "RemoveOrderSummaryConfirmed", new { value = item.TicketPrice, id = item.Id }, htmlAttributes: new { @class = "operator btn btn-danger btn-xs" })
                 @*<button class="operator btn btn-danger btn-xs" value="@item.TicketPrice" data-id="@item.Id">x</button>*@
             </td>

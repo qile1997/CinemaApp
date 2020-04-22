@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\MoviePaymentDetails.cs" />
     <Compile Include="ViewModel\UserCartDetails.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +192,8 @@
     <Content Include="Views\Movies\Payment.cshtml" />
     <Content Include="Views\Movies\TransactionView.cshtml" />
     <Content Include="Views\Movies\RemoveOrderSummaryConfirmed.cshtml" />
+    <Content Include="Views\Shared\MovieSeatsLayout.cshtml" />
+    <Content Include="Views\Movies\MoviePayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

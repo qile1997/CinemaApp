@@ -136,11 +136,11 @@ namespace CinemaApp.Persistance.Repository
         public void PrintUserTable()
         {
             Console.WriteLine("User Details");
-            var UserTable = new ConsoleTable("Id", "Name", "Username", "Password");
+            var UserTable = new ConsoleTable("Id", "Name", "Username", "Password", "Balance");
 
             foreach (var item in db.UserDetails)
             {
-                UserTable.AddRow(item.Id, item.Name, item.Username, item.Password);
+                UserTable.AddRow(item.Id, item.Name, item.Username, item.Password, item.Balance);
             }
 
             UserTable.Write();
