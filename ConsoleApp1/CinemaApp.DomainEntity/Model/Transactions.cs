@@ -19,6 +19,7 @@ namespace CinemaApp.DomainEntity.Model
         public TransactionType Transaction { get; set; }
         [Display(Name = "Transaction Date")]
         public DateTime TransactionDate { get; set; }
+        [Required]
         [StringLength(15, ErrorMessage = "Maximum length 15 chracters.")]
         public string Remarks { get; set; }
     }

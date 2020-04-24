@@ -11,7 +11,7 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
 {
     public class UserDetailsController : ApiController
     {
-       private CinemaCustomerRepository cinemaRepo = new CinemaCustomerRepository();
+        private CinemaCustomerRepository cinemaRepo = new CinemaCustomerRepository();
         // GET: api/UserDetails
         public IEnumerable<string> Get()
         {
@@ -51,6 +51,19 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         public double TicketTotal(int UserDetailsId)
         {
             return cinemaRepo.TicketTotal(UserDetailsId);
+        }
+        [Route("api/UserDetails/GetUnorderedSeats/{UserDetailsId:int}")]
+        [HttpGet]
+        public IEnumerable<UserCart> GetUnorderedSeats(int UserDetailsId)
+        {
+            return cinemaRepo.GetUnorderedSeats(UserDetailsId);
+        }
+
+        [Route("api/UserDetails/RemoveUnconfirmedOrders/{UserDetailsId:int}")]
+        [HttpGet]
+        public void RemoveUnconfirmedOrders(int UserDetailsId)
+        {
+            cinemaRepo.RemoveUnconfirmedOrders(UserDetailsId);
         }
     }
 }

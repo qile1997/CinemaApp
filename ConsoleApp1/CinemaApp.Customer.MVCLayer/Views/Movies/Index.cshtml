@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<CinemaApp.DomainEntity.Model.Movie>
-
+<style>
+    td {
+        font-size: 15px;
+    }
+</style>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Movies";
 }
 <head>
     @Styles.Render("~/Content/css")
@@ -20,6 +24,9 @@
             @Html.DisplayNameFor(model => model.ReleaseDate)
         </th>
         <th>
+          
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.MovieAvailability)
         </th>
     </tr>
@@ -36,6 +43,36 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ReleaseDate)
             </td>
+            @if (item.MovieId == 101)
+            {
+                <td>
+                    <img src="~/Images/Justice_League.jpg" style="max-width:180px" />
+                </td>
+            }
+            else if (item.MovieId == 102)
+            {
+                <td>
+                    <img src="~/Images/TheMatrix.jpg" style="max-width:180px" />
+                </td>
+            }
+            else if (item.MovieId == 103)
+            {
+                <td>
+                    <img src="~/Images/TheAvengers.jpg" style="max-width:180px" />
+                </td>
+            }
+            else if (item.MovieId == 104)
+            {
+                <td>
+                    <img src="~/Images/Spiderman.jpg" style="max-width:180px" />
+                </td>
+            }
+            else
+            {
+                <td>
+                    <img src="~/Images/GreenLantern.jpg" style="max-width:180px" />
+                </td>
+            }
             @if (item.MovieAvailability == true)
             {
                 <td>

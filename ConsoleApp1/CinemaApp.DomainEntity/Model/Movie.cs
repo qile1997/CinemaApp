@@ -15,6 +15,7 @@ namespace CinemaApp.DomainEntity.Model
         [Display(Name = "Movie Title")]
         public string MovieTitle { get; set; }
         [Display(Name ="Release Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMMM yyyy}")]
         public DateTime ReleaseDate { get; set; }
         [Display(Name = "Movie Availability")]
         public bool MovieAvailability { get; set; }

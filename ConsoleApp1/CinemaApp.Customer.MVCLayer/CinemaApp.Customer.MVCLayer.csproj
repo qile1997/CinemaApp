@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\MovieHallsData.cs" />
     <Compile Include="ViewModel\MoviePaymentDetails.cs" />
     <Compile Include="ViewModel\UserCartDetails.cs" />
   </ItemGroup>
@@ -152,6 +153,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\cinemaposter.jpg" />
+    <Content Include="Images\GreenLantern.jpg" />
+    <Content Include="Images\Justice_League.jpg" />
+    <Content Include="Images\Spiderman.jpg" />
+    <Content Include="Images\TheAvengers.jpg" />
+    <Content Include="Images\theavengers1.jpg" />
+    <Content Include="Images\TheMatrix.jpg" />
+    <Content Include="Images\Webp.net-resizeimage.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\FontAwesome.otf" />

@@ -41,5 +41,23 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
             UserCart cart = cinemaRepo.GetCart(id);
             cinemaRepo.DeleteCart(cart);
         }
+        [Route("api/UserCart/ReplaceUnorderedSeats/{UserDetailsId:int}")]
+        [HttpGet]
+        public void ReplaceUnorderedSeats(int UserDetailsId)
+        {
+            cinemaRepo.ReplaceUnorderedSeats(UserDetailsId);
+        }
+        [Route("api/UserCart/GetUnorderedSeats/{UserDetailsId:int}")]
+        [HttpGet]
+        public IEnumerable<UserCart> GetUnorderedSeats(int UserDetailsId)
+        {
+            return cinemaRepo.GetUnorderedSeats(UserDetailsId);
+        }
+        [Route("api/UserCart/OrderSummaryConfirmedList/{UserDetailsId:int}")]
+        [HttpGet]
+        public IEnumerable<UserCart> OrderSummaryConfirmedList(int UserDetailsId)
+        {
+            return cinemaRepo.OrderSummaryConfirmedList(UserDetailsId);
+        }
     }
 }

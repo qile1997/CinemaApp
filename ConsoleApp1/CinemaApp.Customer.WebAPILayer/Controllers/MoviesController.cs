@@ -55,12 +55,6 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         {
             return cinemaRepo.GetMovieHallData(MovieHallId);
         }
-        //[Route("api/Movies/GetMovieData/{MovieId:int}")]
-        //[HttpGet]
-        //public Movie GetMovieData(int MovieId)
-        //{
-        //    return cinemaRepo.GetMovieData(MovieId);
-        //}
      
         [Route("api/Movies/UpdateSeatToCart")]
         [HttpPost]
@@ -68,12 +62,6 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         {
             cinemaRepo.UpdateMovieHallDetailsSeat(Id);
         }
-        //[Route("api/Movies/GetMovieSeatDetails/{MovieHallId:int}/Seat")]
-        //[HttpPost]
-        //public MovieHallDetails replaceEmptyOrTakenSeat(int MovieHallId,string Seat)
-        //{
-        //    return cinemaRepo.replaceEmptyOrTakenSeat(Seat, MovieHallId);
-        //}
 
         public Movie Get(int id)
         {
@@ -84,19 +72,5 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         {
             cinemaRepo.UpdateMovieHallDetailsSeat(mhd);
         }
-        //// POST: api/Movies
-        //public void Post([FromBody]string value)
-        //{
-        //}
-
-        //// PUT: api/Movies/5
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE: api/Movies/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

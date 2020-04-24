@@ -16,7 +16,6 @@ namespace CinemaApp.Admin
     {
         static void Main(string[] args)
         {
-            CinemaAdminRepository cinemaAdminRepo = new CinemaAdminRepository();
             TableRepository tableRepo = new TableRepository();
             const string Controller = "Admin";
             HttpResponseMessage response;

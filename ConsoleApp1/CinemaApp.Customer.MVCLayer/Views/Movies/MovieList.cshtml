@@ -7,7 +7,11 @@
 @{
     ViewBag.Title = "MovieList";
 }
-
+<style>
+    td{
+        font-size:15px;
+    }
+</style>
 <h2>Available Movies</h2>
 
 <table class="table table-striped">
@@ -18,18 +22,51 @@
         <th>
             @Html.DisplayNameFor(model => model.MovieTitle)
         </th>
+        <th>
+
+        </th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieTitle)
-            </td>
-        </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.MovieId)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.MovieTitle)
+    </td>
+    @if (item.MovieId == 101)
+    {
+        <td style="float:right">
+            <img src="~/Images/Justice_League.jpg" style="max-width:180px" />
+        </td>
+    }
+    else if (item.MovieId == 102)
+    {
+        <td style="float:right">
+            <img src="~/Images/TheMatrix.jpg" style="max-width:180px" />
+        </td>
+    }
+    else if (item.MovieId == 103)
+    {
+        <td style="float:right">
+            <img src="~/Images/TheAvengers.jpg" style="max-width:180px" />
+        </td>
+    }
+    else if (item.MovieId == 104)
+    {
+        <td style="float:right">
+            <img src="~/Images/Spiderman.jpg" style="max-width:180px" />
+        </td>
+    }
+    else
+    {
+        <td style="float:right">
+            <img src="~/Images/GreenLantern.jpg" style="max-width:180px" />
+        </td>
+    }
+</tr>
     }
 
 </table>

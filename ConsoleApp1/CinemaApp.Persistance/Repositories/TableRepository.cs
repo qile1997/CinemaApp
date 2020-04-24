@@ -41,7 +41,7 @@ namespace CinemaApp.Persistance.Repository
                                     TotalColumn = h.TotalColumn,
                                     HallId = h.HallId,
                                 };
-
+                
             foreach (var _item in MovieHallData)
             {
                 Console.WriteLine("Hall No : " + _item.HallNo);

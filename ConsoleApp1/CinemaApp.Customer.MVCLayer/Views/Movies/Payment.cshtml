@@ -58,11 +58,15 @@
                     _TotalAmount = parseFloat(TotalAmount) + 0.11;
                     if (_TotalAmount >@ViewBag.Balance) {
                         alert('Please use IBG transfer. Not enough balance.')
+                        $(".btn").attr("disabled", "disabled");
                     }
-                } else {
-                    _TotalAmount = parseFloat(TotalAmount) - 0.11;
                 }
-
+                else {
+                    _TotalAmount = parseFloat(TotalAmount) - 0.11;
+                    if (_TotalAmount <=@ViewBag.Balance) {
+                        $(".btn").removeAttr("disabled");
+                    }
+                }
                 _TotalAmount = _TotalAmount.toFixed(2);
                 $("#TotalAmount").val(_TotalAmount);
             })

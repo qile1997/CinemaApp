@@ -131,7 +131,7 @@ namespace CinemaApp.Persistance.Repository
             return db.MovieHallDetails.ToList();
         }
 
-        public MovieHallDetails GetAMovieHallDetail(int Id)
+        public MovieHallDetails GetMovieHallDetail(int Id)
         {
             MovieHallDetails mhd = db.MovieHallDetails.Find(Id);
             return mhd;
@@ -164,6 +164,56 @@ namespace CinemaApp.Persistance.Repository
         public IEnumerable<Transactions> GetTransactions()
         {
             return db.Transactions.ToList();
+        }
+
+        public void ReplaceUnorderedSeats(int UserDetailsId)
+        {
+            var cart = db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList();
+
+            foreach (var item in cart)
+            {
+                item.ConfirmCart = true;
+                Save();
+            }
+            var _cart = db.MovieHallDetails.Where(d => d.UserDetailsId == UserDetailsId).ToList();
+
+            foreach (var item in _cart)
+            {
+                item.SeatStatus = Status.O;
+                Save();
+            }
+        }
+
+        public IEnumerable<UserCart> GetUnorderedSeats(int UserDetailsId)
+        {
+            return db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList();
+        }
+
+        public IEnumerable<Transactions> GetUserTransactionList(int UserDetailsId)
+        {
+            return db.Transactions.Where(d => d.UserDetailsId == UserDetailsId).ToList();
+        }
+
+        public void RemoveUnconfirmedOrders(int UserDetailsId)
+        {
+            var _RemoveUnconfirmedOrders = (from mhd in db.MovieHallDetails
+                                            join uc in db.UserCarts
+                                             on mhd.Seat equals uc.Seat
+                                            where mhd.UserDetailsId == UserDetailsId && uc.ConfirmCart == false && uc.UserDetailsId == UserDetailsId
+                                            select mhd).ToList();
+
+            foreach (var item in _RemoveUnconfirmedOrders)
+            {
+                item.SeatStatus = Status.E;
+                item.UserDetailsId = null;
+            }
+
+            Save();
+        }
+
+        public IEnumerable<UserCart> OrderSummaryConfirmedList(int UserDetailsId)
+        {
+            return db.UserCarts.Where(d => d.ConfirmCart == true && d.UserDetailsId == UserDetailsId).ToList();
         }
     }
 }

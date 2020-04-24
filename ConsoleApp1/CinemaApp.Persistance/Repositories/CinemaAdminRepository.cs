@@ -180,7 +180,7 @@ namespace CinemaApp.Persistance.Repository
             Movie movie = new Movie();
             movie.MovieId = 101;
             movie.MovieTitle = "Justice League";
-            movie.ReleaseDate = new DateTime(2012, 4, 12);
+            movie.ReleaseDate = new DateTime(2012, 5, 12);
             movie.MovieAvailability = true;
             movie.TicketPrice = 12;
             AddMovie(movie);
@@ -221,8 +221,12 @@ namespace CinemaApp.Persistance.Repository
             user.Name = "Mike";
             user.Username = "321";
             user.Password = "321";
-            user.Balance = 50;
+            user.Balance = 150;
             AddUserDetails(user);
+            user.Name = "Test";
+            user.Username = "111";
+            user.Password = "111";
+            user.Balance = 12;
         }
         public void ClearUserCart()
         {

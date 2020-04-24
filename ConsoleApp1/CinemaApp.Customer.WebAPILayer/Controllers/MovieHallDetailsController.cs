@@ -21,7 +21,7 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         // GET: api/MovieHallDetails/5
         public MovieHallDetails Get(int id)
         {
-            MovieHallDetails mhd = cinemaRepo.GetAMovieHallDetail(id);
+            MovieHallDetails mhd = cinemaRepo.GetMovieHallDetail(id);
             return mhd;
         }
         public void Put(MovieHallDetails mhd)
@@ -43,5 +43,6 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         public void Delete(int id)
         {
         }
+ 
     }
 }

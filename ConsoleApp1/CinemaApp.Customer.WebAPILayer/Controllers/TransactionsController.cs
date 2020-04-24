@@ -13,9 +13,9 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
     {
         private CinemaCustomerRepository cinemaRepo = new CinemaCustomerRepository();
         // GET: api/Transactions
-        public IEnumerable<string> Get()
+        public IEnumerable<Transactions> Get()
         {
-            return new string[] { "value1", "value2" };
+            return cinemaRepo.GetTransactions();
         }
 
         // GET: api/Transactions/5
@@ -38,6 +38,12 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         // DELETE: api/Transactions/5
         public void Delete(int id)
         {
+        }
+        [Route("api/Transactions/GetUserTransactionList/{UserDetailsId:int}")]
+        [HttpGet]
+        public IEnumerable<Transactions> GetUserTransactionList(int UserDetailsId)
+        {
+            return cinemaRepo.GetUserTransactionList(UserDetailsId);
         }
     }
 }
