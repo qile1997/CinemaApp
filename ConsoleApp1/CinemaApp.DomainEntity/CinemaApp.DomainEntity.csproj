@@ -51,16 +51,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\iCinemaAdminRepository.cs" />
-    <Compile Include="Interfaces\iCinemaCustomerRepository.cs" />
-    <Compile Include="Interfaces\iTableRepository.cs" />
-    <Compile Include="Model\Hall.cs" />
-    <Compile Include="Model\Movie.cs" />
-    <Compile Include="Model\MovieHall.cs" />
-    <Compile Include="Model\MovieHallDetails.cs" />
-    <Compile Include="Model\Transactions.cs" />
-    <Compile Include="Model\UserCart.cs" />
-    <Compile Include="Model\UserDetails.cs" />
+    <Compile Include="Infrastructure\Interfaces\iCinemaAdminRepository.cs" />
+    <Compile Include="Infrastructure\Interfaces\iCinemaCustomerRepository.cs" />
+    <Compile Include="Infrastructure\Interfaces\iTableRepository.cs" />
+    <Compile Include="Infrastructure\Model\Aggregate\Hall.cs" />
+    <Compile Include="Infrastructure\Model\Aggregate\Movie.cs" />
+    <Compile Include="Infrastructure\Model\Aggregate\MovieHall.cs" />
+    <Compile Include="Infrastructure\Model\Aggregate\MovieHallDetails.cs" />
+    <Compile Include="Infrastructure\Model\Aggregate\Transactions.cs" />
+    <Compile Include="Infrastructure\Model\Aggregate\UserCart.cs" />
+    <Compile Include="Infrastructure\Model\Aggregate\UserDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

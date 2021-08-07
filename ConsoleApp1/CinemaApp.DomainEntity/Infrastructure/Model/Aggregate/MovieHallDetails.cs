@@ -16,7 +16,7 @@ namespace CinemaApp.DomainEntity.Model
     }
     public enum Status
     {
-        E, T, O,A
+        E, T, O, A
     }
 }
 

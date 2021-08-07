@@ -1,14 +1,6 @@
-﻿using CinemaApp.DomainEntity.Model;
-using CinemaApp.Persistance;
-using CinemaApp.Persistance.Repository;
-using ConsoleTables;
+﻿using CinemaApp.Persistance.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CinemaApp.Admin
 {

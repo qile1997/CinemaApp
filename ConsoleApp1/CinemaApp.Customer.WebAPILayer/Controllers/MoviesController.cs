@@ -13,6 +13,7 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
     public class MoviesController : ApiController
     {
         private CinemaCustomerRepository cinemaRepo = new CinemaCustomerRepository();
+
         // GET: api/Movies
         public IEnumerable<Movie> Get()
         {

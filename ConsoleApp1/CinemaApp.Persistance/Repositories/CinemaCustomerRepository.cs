@@ -202,6 +202,10 @@ namespace CinemaApp.Persistance.Repository
                                             where mhd.UserDetailsId == UserDetailsId && uc.ConfirmCart == false && uc.UserDetailsId == UserDetailsId
                                             select mhd).ToList();
 
+            var RemoveUnconfirmedOrders = db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList();
+            db.UserCarts.RemoveRange(RemoveUnconfirmedOrders);
+            Save();
+
             foreach (var item in _RemoveUnconfirmedOrders)
             {
                 item.SeatStatus = Status.E;

@@ -28,7 +28,6 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
 
         private const string UserCartController = "UserCart";
 
-
         public int UserIdSession()
         {
             return Convert.ToInt32(Session["UserId"]);
@@ -223,12 +222,11 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             {
                 return Json(new { Button = true, Msg = UserDetails.Name + " , you need minimum RM" + (MovieData.TicketPrice - Convert.ToDouble(Session["BalanceCount"])) + " to buy seat " + "(" + Seat + ")" }, JsonRequestBehavior.AllowGet);
             }
+
             int mhdId = replaceEmptyOrTakenSeat.Id;
 
             if (replaceEmptyOrTakenSeat.UserDetailsId == null)
             {
-                //Current Seat Id
-
                 MovieHallDetails mhd = new MovieHallDetails
                 {
                     Id = mhdId,
@@ -318,6 +316,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             {
                 _trans.TransferMode = Transfer.IBG;
             }
+
             if (Remarks == "")
             {
                 _trans.Remarks = "-";
@@ -395,8 +394,6 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         }
         public ActionResult Payment()
         {
-            //int UserDetailsId = UserIdSession();
-
             //Sum of cart seats ticket price
             var OrderSummary = GetOrderSummary();
 
@@ -470,9 +467,8 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         public ActionResult Logout()
         {
             int UserDetailsId = UserIdSession();
-            var RemoveUnconfirmedOrders = db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList();
-            db.UserCarts.RemoveRange(RemoveUnconfirmedOrders);
 
+            db.SaveChanges();
             response = GlobalVariables.WebApiClient.GetAsync($"{UserDetailsController}/RemoveUnconfirmedOrders/{UserDetailsId}").Result;
 
             Session.Abandon();
