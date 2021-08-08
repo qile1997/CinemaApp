@@ -226,7 +226,8 @@ namespace CinemaApp.Persistance.Repository
             user.Name = "Test";
             user.Username = "111";
             user.Password = "111";
-            user.Balance = 12;
+            user.Balance = 120;
+            AddUserDetails(user);
         }
         public void ClearUserCart()
         {

@@ -95,7 +95,7 @@ namespace CinemaApp.Persistance.Repository
                             join mh in db.MovieHall on h.HallId equals mh.HallId
                             where mh.MovieHallId == MovieHallId
                             select h).SingleOrDefault();
-
+            
             return HallData;
         }
 
@@ -133,8 +133,7 @@ namespace CinemaApp.Persistance.Repository
 
         public MovieHallDetails GetMovieHallDetail(int Id)
         {
-            MovieHallDetails mhd = db.MovieHallDetails.Find(Id);
-            return mhd;
+            return db.MovieHallDetails.Find(Id);
         }
 
         public void AddTransaction(Transactions trans)
