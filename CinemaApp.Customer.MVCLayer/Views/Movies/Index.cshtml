@@ -1,0 +1,93 @@
+﻿@model IEnumerable<CinemaApp.DomainEntity.Model.Movie>
+<style>
+    td {
+        font-size: 15px;
+    }
+</style>
+@{
+    ViewBag.Title = "Movies";
+}
+<head>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<h2 style="text-align:center">Movies</h2>
+<table class="table table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </th>
+        <th>
+          
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieAvailability)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            @if (item.MovieId == 101)
+            {
+                <td>
+                    <img src="~/Images/Justice_League.jpg" style="max-width:180px" />
+                </td>
+            }
+            else if (item.MovieId == 102)
+            {
+                <td>
+                    <img src="~/Images/TheMatrix.jpg" style="max-width:180px" />
+                </td>
+            }
+            else if (item.MovieId == 103)
+            {
+                <td>
+                    <img src="~/Images/TheAvengers.jpg" style="max-width:180px" />
+                </td>
+            }
+            else if (item.MovieId == 104)
+            {
+                <td>
+                    <img src="~/Images/Spiderman.jpg" style="max-width:180px" />
+                </td>
+            }
+            else
+            {
+                <td>
+                    <img src="~/Images/GreenLantern.jpg" style="max-width:180px" />
+                </td>
+            }
+            @if (item.MovieAvailability == true)
+            {
+                <td>
+                    Now Showing
+                </td>
+            }
+            else
+            {
+                <td>
+                    Coming Soon
+                </td>
+            }
+        </tr>
+    }
+
+</table>
+
+@*@Html.ActionLink(" Login", "LoginPage", null, new { @class = "fa fa-arrow-right" })*@

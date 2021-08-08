@@ -1,0 +1,86 @@
+﻿@model IEnumerable<CinemaApp.DomainEntity.Model.UserCart>
+
+@{
+    Layout = "~/Views/Shared/LoginLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "OrderSummary";
+}
+
+<h2 style="display:inline-block">Confirmed Orders</h2>
+<h4 style="display:inline-block;float:right;padding:15px">Current Balance : RM @ViewBag.Balance</h4>
+<h4 style="display:inline;float:right;padding:15px">User : @ViewBag.Username</h4>
+
+<table class="table table-striped">
+    <tr style="text-align:center">
+        <th>
+            @Html.DisplayNameFor(model => model.MovieHallsId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HallNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieDateTime)
+        </th>
+        <th>
+            Price (RM)
+        </th>
+        <th>
+            Seat (R,C)
+        </th>
+        <th style="text-align:center">
+            Cancel Order
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr> 
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieHallsId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HallNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seat)
+            </td>
+            <td style="text-align:center">
+                @Html.ActionLink("x", "RemoveOrderSummaryConfirmed", new { value = item.TicketPrice, id = item.Id }, htmlAttributes: new { @class = "operator btn btn-danger btn-xs" })
+                @*<button class="operator btn btn-danger btn-xs" value="@item.TicketPrice" data-id="@item.Id">x</button>*@
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.ActionLink(" Back to previous page", null, null, null, new { href = Request.UrlReferrer, @class = "fa fa-arrow-left" })
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    //$(document).ready(function () {
+    //    $(".operator").click(function (operator) {
+    //        var dataId = $(this).attr("data-id");
+    //        var operation = operator.target.value;
+    //        console.log(operation);
+    //        $.ajax({
+    //            type: "GET",
+    //            url: "/Movies/RemoveOrderSummaryConfirmed",
+    //            data: { TicketPrice: operation, Id: dataId }
+    //        })
+    //    })
+    //})
+</script>

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<CinemaApp.DomainEntity.Model.UserCart>
+
+@{
+    Layout = "~/Views/Shared/MovieSeatsLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "OrderSummary";
+}
+
+<h2 style="display:inline-block">Cart</h2>
+<h4 style="display:inline-block;float:right;padding:15px">Remaining Balance : RM @ViewBag.RemainingBalance</h4>
+<h4 style="display:inline;float:right;padding:15px">User : @ViewBag.Username</h4>
+<table class="table table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieHallsId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HallNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieDateTime)
+        </th>
+        <th>
+            Price (RM)
+        </th>
+        <th>
+            Seat (R,C)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieHallsId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HallNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seat)
+            </td>
+        </tr>
+    }
+    <tr>
+        <td style="font-weight:bold">Total Amount</td>
+        <td></td>
+        <td></td>
+        <td>    </td>
+        <td>@Model.Sum(i => i.TicketPrice)</td>
+        <td></td>
+    </tr>
+</table>
+@Html.ActionLink(" Movie Seats", "MovieSeats", null, htmlAttributes: new { @class = "fa fa-arrow-left" })
+@if (ViewBag.Count > 0)
+{
+    @Html.ActionLink(" Payment", "Payment", null, htmlAttributes: new { @class = "fa fa-arrow-right", @style = "float:right" })
+}
+
