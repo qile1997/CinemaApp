@@ -156,8 +156,7 @@ namespace CinemaApp.Persistance.Repository
 
         public UserCart GetCart(int Id)
         {
-            UserCart cart = db.UserCarts.Find(Id);
-            return cart;
+            return db.UserCarts.Find(Id);
         }
 
         public IEnumerable<Transactions> GetTransactions()
@@ -167,16 +166,13 @@ namespace CinemaApp.Persistance.Repository
 
         public void ReplaceUnorderedSeats(int UserDetailsId)
         {
-            var cart = db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList();
-
-            foreach (var item in cart)
+            foreach (var item in db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList())
             {
                 item.ConfirmCart = true;
                 Save();
             }
-            var _cart = db.MovieHallDetails.Where(d => d.UserDetailsId == UserDetailsId).ToList();
 
-            foreach (var item in _cart)
+            foreach (var item in db.MovieHallDetails.Where(d => d.UserDetailsId == UserDetailsId).ToList())
             {
                 item.SeatStatus = Status.O;
                 Save();
@@ -195,17 +191,16 @@ namespace CinemaApp.Persistance.Repository
 
         public void RemoveUnconfirmedOrders(int UserDetailsId)
         {
-            var _RemoveUnconfirmedOrders = (from mhd in db.MovieHallDetails
+            var RemoveUnconfirmedOrders = (from mhd in db.MovieHallDetails
                                             join uc in db.UserCarts
                                              on mhd.Seat equals uc.Seat
                                             where mhd.UserDetailsId == UserDetailsId && uc.ConfirmCart == false && uc.UserDetailsId == UserDetailsId
                                             select mhd).ToList();
 
-            var RemoveUnconfirmedOrders = db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList();
-            db.UserCarts.RemoveRange(RemoveUnconfirmedOrders);
+            db.UserCarts.RemoveRange(db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList());
             Save();
 
-            foreach (var item in _RemoveUnconfirmedOrders)
+            foreach (var item in RemoveUnconfirmedOrders)
             {
                 item.SeatStatus = Status.E;
                 item.UserDetailsId = null;

@@ -27,6 +27,13 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         private const string MovieHallController = "MovieHall";
 
         private const string UserCartController = "UserCart";
+        private UserDetails _userDetails { get; set; }
+        private Hall _hallData { get; set; }
+        private Movie _movieData { get; set; }
+        private MovieHall _movieHallData { get; set; }
+        private int SessionId { get; set; }
+        private int MovieId { get; set; }
+        private int MovieHallId { get; set; }
 
         public int UserIdSession()
         {
@@ -43,42 +50,32 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         //Get User Data
         public UserDetails GetUserDetails()
         {
-            int UserDetailsId = UserIdSession();
-            response = GlobalVariables.WebApiClient.GetAsync($"{UserDetailsController}/{UserDetailsId}").Result;
-            UserDetails UserDetails = response.Content.ReadAsAsync<UserDetails>().Result;
-            return UserDetails;
+            response = GlobalVariables.WebApiClient.GetAsync($"{UserDetailsController}/{UserIdSession()}").Result;
+            return response.Content.ReadAsAsync<UserDetails>().Result;
         }
         //Get Movie data
         public Movie GetMovieData()
         {
-            int MovieId = MovieSessionId();
-            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/{MovieId}").Result;
-            Movie MovieData = response.Content.ReadAsAsync<Movie>().Result;
-            return MovieData;
+            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/{MovieSessionId()}").Result;
+            return response.Content.ReadAsAsync<Movie>().Result;
         }
         //Get Hall data
         public Hall GetHallData()
         {
-            int MovieHallId = MovieHallIdSession();
-            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetHallData/{MovieHallId}").Result;
-            Hall HallData = response.Content.ReadAsAsync<Hall>().Result;
-            return HallData;
+            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetHallData/{MovieHallIdSession()}").Result;
+            return response.Content.ReadAsAsync<Hall>().Result;
         }
         //Get MovieHall Data
         public MovieHall GetMovieHallData()
         {
-            int MovieHallId = MovieHallIdSession();
-            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetMovieHallData/{MovieHallId}").Result;
-            MovieHall MovieHallData = response.Content.ReadAsAsync<MovieHall>().Result;
-            return MovieHallData;
+            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetMovieHallData/{MovieHallIdSession()}").Result;
+            return response.Content.ReadAsAsync<MovieHall>().Result;
         }
         //Get Ticket Price From Cart
         public double GetTicketPrice()
         {
-            int UserDetailsId = UserIdSession();
-            response = GlobalVariables.WebApiClient.GetAsync($"{UserDetailsController}/TicketTotal/{UserDetailsId}").Result;
-            double TicketTotal = response.Content.ReadAsAsync<double>().Result;
-            return TicketTotal;
+            response = GlobalVariables.WebApiClient.GetAsync($"{UserDetailsController}/TicketTotal/{UserIdSession()}").Result;
+            return response.Content.ReadAsAsync<double>().Result;
         }
         //Update User
         public void UpdateUserDetails(UserDetails user)
@@ -103,18 +100,19 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoginPage(UserDetails user)
+        public ActionResult LoginPage(UserDetails userDetails)
         {
-            response = GlobalVariables.WebApiClient.PostAsJsonAsync($"{UserDetailsController}/LoginCheck", user).Result;
-            UserDetails _user = response.Content.ReadAsAsync<UserDetails>().Result;
+            response = GlobalVariables.WebApiClient.PostAsJsonAsync($"{UserDetailsController}/LoginCheck", userDetails).Result;
 
-            if (_user == null)
+            _userDetails = response.Content.ReadAsAsync<UserDetails>().Result;
+
+            if (_userDetails == null)
             {
                 ViewBag.FailMessage = "Username / Password invalid";
                 return View();
             }
 
-            Session["UserId"] = _user.Id;
+            Session["UserId"] = _userDetails.Id;
             return RedirectToAction("MovieList");
         }
         public ActionResult MovieList()
@@ -134,7 +132,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
 
         public ActionResult MovieHalls()
         {
-            int MovieId = MovieSessionId();
+            MovieId = MovieSessionId();
 
             response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetSelectedMovies/{MovieId}").Result;
             IEnumerable<MovieHall> movieHalls = response.Content.ReadAsAsync<IEnumerable<MovieHall>>().Result;
@@ -151,41 +149,41 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         }
         public ActionResult MovieSeats()
         {
-            int UserDetailsId = UserIdSession();
-            int MovieHallId = MovieHallIdSession();
+            SessionId = UserIdSession();
+            MovieHallId = MovieHallIdSession();
 
             //5 minutes for payment
-            Session["PaymentId"] = UserDetailsId;
+            Session["PaymentId"] = SessionId;
             Session.Timeout = 5;
 
             response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetMovieSeats/{MovieHallId}").Result;
             IEnumerable<MovieHallDetails> movieSeats = response.Content.ReadAsAsync<IEnumerable<MovieHallDetails>>().Result;
 
             //Get Current Hall Data
-            Hall HallData = GetHallData();
+            _hallData = GetHallData();
 
             //Get Movie Data
-            Movie MovieData = GetMovieData();
+            _movieData = GetMovieData();
 
             //Get Current Movie Hall Data
-            MovieHall MovieHallData = GetMovieHallData();
+            _movieHallData = GetMovieHallData();
 
             //Get Current User Data
-            UserDetails UserDetails = GetUserDetails();
+            _userDetails = GetUserDetails();
 
             //Ticket Total Price
             double TicketTotal = GetTicketPrice();
 
-            ViewBag.CurrentBalance = UserDetails.Balance;
-            ViewBag.RemainingBalance = UserDetails.Balance - TicketTotal;
-            Session["BalanceCount"] = UserDetails.Balance - TicketTotal;
-            ViewBag.Username = UserDetails.Name;
-            ViewBag.HallNo = HallData.HallNo;
-            ViewBag.MovieId = MovieData.MovieId;
-            ViewBag.MovieTitle = MovieData.MovieTitle;
-            ViewBag.MovieDateTime = MovieHallData.MovieDateTime.ToString("h:mm tt");
-            ViewBag.TicketPrice = MovieData.TicketPrice;
-            ViewBag.UserDetailsId = UserDetailsId;
+            ViewBag.CurrentBalance = _userDetails.Balance;
+            ViewBag.RemainingBalance = _userDetails.Balance - TicketTotal;
+            Session["BalanceCount"] = _userDetails.Balance - TicketTotal;
+            ViewBag.Username = _userDetails.Name;
+            ViewBag.HallNo = _hallData.HallNo;
+            ViewBag.MovieId = _movieData.MovieId;
+            ViewBag.MovieTitle = _movieData.MovieTitle;
+            ViewBag.MovieDateTime = _movieHallData.MovieDateTime.ToString("h:mm tt");
+            ViewBag.TicketPrice = _movieData.TicketPrice;
+            ViewBag.UserDetailsId = SessionId;
             return View(movieSeats);
         }
 
@@ -195,32 +193,32 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         {
             AppDbContext db = new AppDbContext();
 
-            int UserDetailsId = UserIdSession();
-            int MovieId = MovieSessionId();
-            int MovieHallId = MovieHallIdSession();
+            SessionId = UserIdSession();
+            MovieId = MovieSessionId();
+            MovieHallId = MovieHallIdSession();
 
             //Replacing Empty / Taken Seat
             var replaceEmptyOrTakenSeat = db.MovieHallDetails.Where(d => d.Seat == Seat && d.MovieHallId == MovieHallId).SingleOrDefault();
 
             //Get Movie Data
-            Movie MovieData = GetMovieData();
+            _movieData = GetMovieData();
 
             //Get Current Hall Data
-            Hall HallData = GetHallData();
+            _hallData = GetHallData();
 
             //Get Current Movie Hall Data
-            MovieHall MovieHallData = GetMovieHallData();
+            _movieHallData = GetMovieHallData();
 
             //Get Current User Data
-            UserDetails UserDetails = GetUserDetails();
+            _userDetails = GetUserDetails();
 
             //Ticket Total Price
             double TicketTotal = GetTicketPrice();
 
             //Calculate minimum balance needed for ticket
-            if (TicketTotal + MovieData.TicketPrice > UserDetails.Balance && replaceEmptyOrTakenSeat.SeatStatus == Status.E)
+            if (TicketTotal + _movieData.TicketPrice > _userDetails.Balance && replaceEmptyOrTakenSeat.SeatStatus == Status.E)
             {
-                return Json(new { Button = true, Msg = UserDetails.Name + " , you need minimum RM" + (MovieData.TicketPrice - Convert.ToDouble(Session["BalanceCount"])) + " to buy seat " + "(" + Seat + ")" }, JsonRequestBehavior.AllowGet);
+                return Json(new { Button = true, Msg = _userDetails.Name + " , you need minimum RM" + (_movieData.TicketPrice - Convert.ToDouble(Session["BalanceCount"])) + " to buy seat " + "(" + Seat + ")" }, JsonRequestBehavior.AllowGet);
             }
 
             int mhdId = replaceEmptyOrTakenSeat.Id;
@@ -233,19 +231,19 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
                     MovieHallId = MovieHallId,
                     Seat = Seat,
                     SeatStatus = Status.A,
-                    UserDetailsId = UserDetailsId
+                    UserDetailsId = SessionId
                 };
 
                 response = GlobalVariables.WebApiClient.PutAsJsonAsync($"{MovieHallDetailsController}/{mhdId}", mhd).Result;
 
                 UserCart cart = new UserCart()
                 {
-                    UserDetailsId = UserDetailsId,
+                    UserDetailsId = SessionId,
                     MovieHallsId = MovieHallId,
-                    MovieTitle = MovieData.MovieTitle,
-                    MovieDateTime = MovieHallData.MovieDateTime,
-                    HallNo = HallData.HallNo,
-                    TicketPrice = MovieData.TicketPrice,
+                    MovieTitle = _movieData.MovieTitle,
+                    MovieDateTime = _movieHallData.MovieDateTime,
+                    HallNo = _hallData.HallNo,
+                    TicketPrice = _movieData.TicketPrice,
                     Seat = Seat,
                     ConfirmCart = false
                 };
@@ -255,7 +253,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             }
             else
             {
-                var removeCart = db.UserCarts.Where(d => d.Seat == Seat && d.UserDetailsId == UserDetailsId && d.MovieHallsId == MovieHallId).SingleOrDefault();
+                var removeCart = db.UserCarts.Where(d => d.Seat == Seat && d.UserDetailsId == SessionId && d.MovieHallsId == MovieHallId).SingleOrDefault();
                 response = GlobalVariables.WebApiClient.DeleteAsync($"{UserCartController}/{removeCart.Id}").Result;
 
                 MovieHallDetails mhd = new MovieHallDetails
@@ -272,8 +270,8 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         }
         public ActionResult ClearHistory()
         {
-            int UserDetailsId = UserIdSession();
-            response = GlobalVariables.WebApiClient.GetAsync($"{TransactionsController}/GetUserTransactionList/{UserDetailsId}").Result;
+            SessionId = UserIdSession();
+            response = GlobalVariables.WebApiClient.GetAsync($"{TransactionsController}/GetUserTransactionList/{SessionId}").Result;
             IEnumerable<Transactions> transactionList = response.Content.ReadAsAsync<IEnumerable<Transactions>>().Result;
 
             //Error
@@ -295,14 +293,14 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         {
             AppDbContext db = new AppDbContext();
 
-            int UserDetailsId = UserIdSession();
-            int Id = Convert.ToInt32(Session["RemoveCartItemId"]);
-            var cart = db.UserCarts.Where(d => d.Id == Id).SingleOrDefault();
-            db.UserCarts.Remove(cart);
+            SessionId = UserIdSession();
+            int CartItemId = Convert.ToInt32(Session["RemoveCartItemId"]);
+            var UserCart = db.UserCarts.Where(d => d.Id == CartItemId).SingleOrDefault();
+            db.UserCarts.Remove(UserCart);
             db.SaveChanges();
 
             //Convert Seat from T to E
-            var MovieHallDetails = db.MovieHallDetails.Where(d => d.MovieHallId == cart.MovieHallsId && d.UserDetailsId == cart.UserDetailsId && d.SeatStatus == Status.O && d.Seat == cart.Seat).SingleOrDefault();
+            var MovieHallDetails = db.MovieHallDetails.Where(d => d.MovieHallId == UserCart.MovieHallsId && d.UserDetailsId == UserCart.UserDetailsId && d.SeatStatus == Status.O && d.Seat == UserCart.Seat).SingleOrDefault();
             MovieHallDetails.SeatStatus = Status.E;
             MovieHallDetails.UserDetailsId = null;
             db.SaveChanges();
@@ -332,7 +330,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
                 TransactionDate = DateTime.Now,
                 TransferAmount = "+" + TotalAmount,
                 Remarks = _trans.Remarks,
-                UserDetailsId = UserDetailsId,
+                UserDetailsId = SessionId,
                 TransferMode = _trans.TransferMode
             };
 
@@ -343,7 +341,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
 
             UserDetails user = new UserDetails()
             {
-                Id = UserDetailsId,
+                Id = SessionId,
                 Name = UserDetails.Name,
                 Username = UserDetails.Username,
                 Password = UserDetails.Password,
@@ -356,7 +354,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         public ActionResult OrderSummary()
         {
             //Get Current User Data
-            UserDetails UserDetails = GetUserDetails();
+            UserDetails _userDetails = GetUserDetails();
 
             //Ticket Total Price
             double TicketTotal = GetTicketPrice();
@@ -364,53 +362,43 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             var OrderSummary = GetOrderSummary();
 
             ViewBag.Count = OrderSummary.Count();
-            ViewBag.RemainingBalance = UserDetails.Balance - TicketTotal;
-            ViewBag.Balance = UserDetails.Balance;
-            ViewBag.Username = UserDetails.Name;
+            ViewBag.RemainingBalance = _userDetails.Balance - TicketTotal;
+            ViewBag.Balance = _userDetails.Balance;
+            ViewBag.Username = _userDetails.Name;
             return View(OrderSummary);
         }
         public IEnumerable<UserCart> GetOrderSummary()
         {
-            int UserDetailsId = UserIdSession();
+            SessionId = UserIdSession();
 
-            response = GlobalVariables.WebApiClient.GetAsync($"{UserCartController}/GetUnorderedSeats/{UserDetailsId}").Result;
+            response = GlobalVariables.WebApiClient.GetAsync($"{UserCartController}/GetUnorderedSeats/{SessionId}").Result;
             IEnumerable<UserCart> OrderSummary = response.Content.ReadAsAsync<IEnumerable<UserCart>>().Result;
             return OrderSummary;
         }
         public ActionResult OrderSummaryConfirmed()
         {
-            //User Balance
-            int UserDetailsId = UserIdSession();
-
-            //Get Current User Data
-            UserDetails UserDetails = GetUserDetails();
-
-            response = GlobalVariables.WebApiClient.GetAsync($"{UserCartController}/OrderSummaryConfirmedList/{UserDetailsId}").Result;
+            //Get Current User Data  
+            _userDetails = GetUserDetails();
+            response = GlobalVariables.WebApiClient.GetAsync($"{UserCartController}/OrderSummaryConfirmedList/{UserIdSession()}").Result;
             IEnumerable<UserCart> OrderSummaryConfirmedList = response.Content.ReadAsAsync<IEnumerable<UserCart>>().Result;
 
-            ViewBag.Balance = UserDetails.Balance;
-            ViewBag.Username = UserDetails.Name;
+            ViewBag.Balance = _userDetails.Balance;
+            ViewBag.Username = _userDetails.Name;
             return View(OrderSummaryConfirmedList);
         }
         public ActionResult Payment()
         {
             //Sum of cart seats ticket price
-            var OrderSummary = GetOrderSummary();
-
-            //Get Current User Data
-            UserDetails UserDetails = GetUserDetails();
-
-            ViewBag.TotalAmount = OrderSummary.Sum(d => d.TicketPrice);
-            ViewBag.Balance = UserDetails.Balance;
+            ViewBag.TotalAmount = GetOrderSummary().Sum(d => d.TicketPrice);
+            ViewBag.Balance = GetUserDetails().Balance;
             return View();
         }
 
         [HttpPost]
         public ActionResult Payment(int TransferMode, double TotalAmount)
         {
-            int UserDetailsId = UserIdSession();
-
-            response = GlobalVariables.WebApiClient.GetAsync($"{UserCartController}/ReplaceUnorderedSeats/{UserDetailsId}").Result;
+            SessionId = UserIdSession();
+            response = GlobalVariables.WebApiClient.GetAsync($"{UserCartController}/ReplaceUnorderedSeats/{SessionId}").Result;
 
             Transactions _trans = new Transactions();
             if (TransferMode == 1)
@@ -427,22 +415,22 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
                 Transaction = TransactionType.Purchase,
                 TransactionDate = DateTime.Now,
                 TransferAmount = "-" + TotalAmount,
-                UserDetailsId = UserDetailsId,
+                UserDetailsId = SessionId,
                 TransferMode = _trans.TransferMode,
                 Remarks = "-"
             };
             UpdateTransaction(trans);
 
             //Get Current User Data
-            UserDetails UserDetails = GetUserDetails();
+            _userDetails = GetUserDetails();
 
             UserDetails user = new UserDetails()
             {
-                Id = UserDetailsId,
-                Name = UserDetails.Name,
-                Username = UserDetails.Username,
-                Password = UserDetails.Password,
-                Balance = UserDetails.Balance - TotalAmount
+                Id = SessionId,
+                Name = _userDetails.Name,
+                Username = _userDetails.Username,
+                Password = _userDetails.Password,
+                Balance = _userDetails.Balance - TotalAmount
             };
 
             UpdateUserDetails(user);
@@ -452,24 +440,20 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
 
         public ActionResult TransactionView()
         {
-            int UserDetailsId = UserIdSession();
-            //User Balance
             //Get Current User Data
-            UserDetails UserDetails = GetUserDetails();
+            _userDetails = GetUserDetails();
 
-            ViewBag.Balance = UserDetails.Balance;
-            ViewBag.Username = UserDetails.Name;
+            ViewBag.Balance = _userDetails.Balance;
+            ViewBag.Username = _userDetails.Name;
 
-            response = GlobalVariables.WebApiClient.GetAsync($"{TransactionsController}/GetUserTransactionList/{UserDetailsId}").Result;
+            response = GlobalVariables.WebApiClient.GetAsync($"{TransactionsController}/GetUserTransactionList/{UserIdSession()}").Result;
             IEnumerable<Transactions> transactionList = response.Content.ReadAsAsync<IEnumerable<Transactions>>().Result;
             return View(transactionList);
         }
         public ActionResult Logout()
         {
-            int UserDetailsId = UserIdSession();
-
             db.SaveChanges();
-            response = GlobalVariables.WebApiClient.GetAsync($"{UserDetailsController}/RemoveUnconfirmedOrders/{UserDetailsId}").Result;
+            response = GlobalVariables.WebApiClient.GetAsync($"{UserDetailsController}/RemoveUnconfirmedOrders/{UserIdSession()}").Result;
 
             Session.Abandon();
             return RedirectToAction("Index");

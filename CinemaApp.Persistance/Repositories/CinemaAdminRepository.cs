@@ -101,10 +101,11 @@ namespace CinemaApp.Persistance.Repository
                 {
                     for (int x = 1; x <= item.TotalColumn; x++)
                     {
+                        // 70% Empty Seats 30% Taken
                         Random rng = new Random();
-                        int k = rng.Next(0, 10);
+                        int chance = rng.Next(0, 10);
                         Thread.Sleep(5);
-                        if (k > 3)
+                        if (chance > 3)
                         {
                             seatstatus = Status.E;
                         }
