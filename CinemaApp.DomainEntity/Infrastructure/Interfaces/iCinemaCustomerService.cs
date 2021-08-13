@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CinemaApp.DomainEntity.Interfaces
 {
-    public interface iCinemaCustomerRepository
+    public interface iCinemaCustomerService
     {
         //UserDetails
         UserDetails LoginCheck(UserDetails user);

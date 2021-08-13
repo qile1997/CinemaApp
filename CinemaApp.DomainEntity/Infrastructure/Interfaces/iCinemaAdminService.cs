@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CinemaApp.DomainEntity.Interfaces
 {
-    public interface iCinemaAdminRepository
+    public interface iCinemaAdminService
     {
         void GenerateUserDetails();
         void GenerateMovies();

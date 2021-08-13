@@ -1,6 +1,6 @@
 ﻿namespace CinemaApp.DomainEntity.Interfaces
 {
-    public interface iTableRepository
+    public interface iTableService
     {
         void PrintUserTable();
         void PrintMoviesTable();

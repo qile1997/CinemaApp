@@ -1,17 +1,13 @@
 ﻿using CinemaApp.DomainEntity.Model;
-using CinemaApp.Persistance.Repository;
-using System;
+using CinemaApp.Persistance.Service;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace CinemaApp.Customer.WebAPILayer.Controllers
 {
     public class UserDetailsController : ApiController
     {
-        private CinemaCustomerRepository cinemaRepo = new CinemaCustomerRepository();
+        private CinemaCustomerService _cinemaCustomerService = new CinemaCustomerService();
         // GET: api/UserDetails
         public IEnumerable<string> Get()
         {
@@ -21,18 +17,18 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         // GET: api/UserDetails/5
         public UserDetails Get(int id)
         {
-            return cinemaRepo.GetUserDetails(id);
+            return _cinemaCustomerService.GetUserDetails(id);
         }
 
         // POST: api/UserDetails
-        public void Post([FromBody]string value)
+        public void Post([FromBody] string value)
         {
         }
 
         // PUT: api/UserDetails/5
         public void Put(UserDetails user)
         {
-            cinemaRepo.UpdateUserDetails(user);
+            _cinemaCustomerService.UpdateUserDetails(user);
         }
 
         // DELETE: api/UserDetails/5
@@ -44,26 +40,28 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         [HttpPost]
         public UserDetails LoginCheck(UserDetails user)
         {
-            return cinemaRepo.LoginCheck(user);
+            return _cinemaCustomerService.LoginCheck(user);
         }
+
         [Route("api/UserDetails/TicketTotal/{UserDetailsId:int}")]
         [HttpGet]
         public double TicketTotal(int UserDetailsId)
         {
-            return cinemaRepo.TicketTotal(UserDetailsId);
+            return _cinemaCustomerService.TicketTotal(UserDetailsId);
         }
+
         [Route("api/UserDetails/GetUnorderedSeats/{UserDetailsId:int}")]
         [HttpGet]
         public IEnumerable<UserCart> GetUnorderedSeats(int UserDetailsId)
         {
-            return cinemaRepo.GetUnorderedSeats(UserDetailsId);
+            return _cinemaCustomerService.GetUnorderedSeats(UserDetailsId);
         }
 
         [Route("api/UserDetails/RemoveUnconfirmedOrders/{UserDetailsId:int}")]
         [HttpGet]
         public void RemoveUnconfirmedOrders(int UserDetailsId)
         {
-            cinemaRepo.RemoveUnconfirmedOrders(UserDetailsId);
+            _cinemaCustomerService.RemoveUnconfirmedOrders(UserDetailsId);
         }
     }
 }

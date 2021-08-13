@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CinemaApp.Persistance.Repository
+namespace CinemaApp.Persistance.Service
 {
-    public class CinemaAdminRepository : iCinemaAdminRepository
+    public class CinemaAdminService : iCinemaAdminService
     {
         private AppDbContext db = new AppDbContext();
         public void AddHall(Hall hall)
@@ -44,18 +44,17 @@ namespace CinemaApp.Persistance.Repository
 
         public void ClearAllData()
         {
-            var removeuser = db.UserDetails.ToList();
-            db.UserDetails.RemoveRange(removeuser);
-            var removemovie = db.Movie.ToList();
-            db.Movie.RemoveRange(removemovie);
-            var removemoviehalls = db.MovieHall.ToList();
-            db.MovieHall.RemoveRange(removemoviehalls);
-            var removemoviehalldetails = db.MovieHallDetails.ToList();
-            db.MovieHallDetails.RemoveRange(removemoviehalldetails);
-            var removehall = db.Hall.ToList();
-            db.Hall.RemoveRange(removehall);
-            var removetransactions = db.Transactions.ToList();
-            db.Transactions.RemoveRange(removetransactions);
+            db.UserDetails.RemoveRange(db.UserDetails.ToList());
+
+            db.Movie.RemoveRange(db.Movie.ToList());
+
+            db.MovieHall.RemoveRange(db.MovieHall.ToList());
+
+            db.MovieHallDetails.RemoveRange(db.MovieHallDetails.ToList());
+
+            db.Hall.RemoveRange(db.Hall.ToList());
+
+            db.Transactions.RemoveRange(db.Transactions.ToList());
             Save();
         }
 
@@ -116,7 +115,7 @@ namespace CinemaApp.Persistance.Repository
                         Thread.Sleep(5);
                         MovieHallDetails moviehalldetails = new MovieHallDetails();
                         moviehalldetails.MovieHallId = item.MovieHallId;
-                        moviehalldetails.Seat = i + "," + x;
+                        moviehalldetails.MovieSeat = i + "," + x;
                         moviehalldetails.SeatStatus = seatstatus;
                         moviehalldetails.UserDetailsId = null;
                         db.MovieHallDetails.Add(moviehalldetails);
@@ -230,6 +229,7 @@ namespace CinemaApp.Persistance.Repository
             user.Balance = 120;
             AddUserDetails(user);
         }
+
         public void ClearUserCart()
         {
             foreach (var item in db.MovieHallDetails)
@@ -258,5 +258,6 @@ namespace CinemaApp.Persistance.Repository
         {
             db.SaveChanges();
         }
+
     }
 }

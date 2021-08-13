@@ -106,13 +106,13 @@
         //Empty Seat (Empty)
         if (item.SeatStatus == CinemaApp.DomainEntity.Model.Status.E)
         {
-            <button class="flex-container Seat" id="@item.Seat">
+            <button class="flex-container Seat" id="@item.MovieSeat">
                 <dl>
                     <dt style="margin-top:-5px;margin-left:6px">
                         E
                     </dt>
                     <dt style="margin-left:1px">
-                        @item.Seat
+                        @item.MovieSeat
                     </dt>
                 </dl>
             </button>
@@ -126,7 +126,7 @@
                         O
                     </dt>
                     <dt style="margin-left:1px">
-                        @item.Seat
+                        @item.MovieSeat
                     </dt>
                 </dl>
             </div>
@@ -140,7 +140,7 @@
                         T
                     </dt>
                     <dt style="margin-left:1px">
-                        @item.Seat
+                        @item.MovieSeat
                     </dt>
                 </dl>
             </div>
@@ -154,7 +154,7 @@
                         T
                     </dt>
                     <dt style="margin-left:1px">
-                        @item.Seat
+                        @item.MovieSeat
                     </dt>
                 </dl>
             </div>
@@ -168,7 +168,7 @@
                         T
                     </dt>
                     <dt style="margin-left:1px">
-                        @item.Seat
+                        @item.MovieSeat
                     </dt>
                 </dl>
             </div>
@@ -176,13 +176,13 @@
         //Added to cart
         else
         {
-            <button class="flex-container3 Seat" id="@item.Seat">
+            <button class="flex-container3 Seat" id="@item.MovieSeat">
                 <dl>
                     <dt style="margin-top:-5px;margin-left:6px">
                         A
                     </dt>
                     <dt style="margin-left:1px">
-                        @item.Seat
+                        @item.MovieSeat
                     </dt>
                 </dl>
             </button>
@@ -214,13 +214,13 @@
 <script>
 
     $(document).ready(function () {
-        $(".Seat").click(function () {
+        $(".MovieSeat").click(function () {
             var dataId = $(this).attr("id");
             console.log(dataId);
             $.ajax({
                 type: "POST",
                 url: "/Movies/UpdateCart",
-                data: { Seat: dataId },
+                data: { MovieSeat: dataId },
                 success: function (response) {
                     if (response) {
                         alert(response.Msg)

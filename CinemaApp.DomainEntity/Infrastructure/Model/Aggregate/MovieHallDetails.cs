@@ -11,7 +11,7 @@ namespace CinemaApp.DomainEntity.Model
         public int Id { get; set; }
         public int MovieHallId { get; set; }
         public Status SeatStatus { get; set; }
-        public string Seat { get; set; }
+        public string MovieSeat { get; set; }
         public int? UserDetailsId { get; set; }
     }
     public enum Status

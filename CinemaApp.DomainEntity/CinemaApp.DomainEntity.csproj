@@ -51,9 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure\Interfaces\iCinemaAdminRepository.cs" />
-    <Compile Include="Infrastructure\Interfaces\iCinemaCustomerRepository.cs" />
-    <Compile Include="Infrastructure\Interfaces\iTableRepository.cs" />
+    <Compile Include="Infrastructure\Interfaces\iCinemaAdminService.cs" />
+    <Compile Include="Infrastructure\Interfaces\iCinemaCustomerService.cs" />
+    <Compile Include="Infrastructure\Interfaces\iTableService.cs" />
     <Compile Include="Infrastructure\Model\Aggregate\Hall.cs" />
     <Compile Include="Infrastructure\Model\Aggregate\Movie.cs" />
     <Compile Include="Infrastructure\Model\Aggregate\MovieHall.cs" />

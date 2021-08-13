@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 
-namespace CinemaApp.Persistance.Repository
+namespace CinemaApp.Persistance.Service
 {
-    public class CinemaCustomerRepository : iCinemaCustomerRepository
+    public class CinemaCustomerService : iCinemaCustomerService
     {
         private AppDbContext db = new AppDbContext();
         public IEnumerable<Movie> GetAvailableMovies()
@@ -40,35 +40,12 @@ namespace CinemaApp.Persistance.Repository
             return db.UserDetails.Where(d => d.Username == user.Username && d.Password == user.Password).SingleOrDefault();
         }
 
-        //public void ReplaceEmptySeats(string Seat, int MovieHallId, int user, int MovieId)
-        //{
-        //    var replaceEmptySeat = db.MovieHallDetails.Where(d => d.Seat == Seat && d.MovieHallId == MovieHallId).SingleOrDefault();
-        //    replaceEmptySeat.SeatStatus = Status.T;
-        //    Save();
-        //    var filterPrice = (from m in db.Movie
-        //                       where m.MovieId == MovieId
-        //                       select m.TicketPrice).SingleOrDefault();
-
-        //    UserCart cart = new UserCart();
-        //    cart.MovieHallsId = MovieHallId;
-        //    cart.MovieId = MovieId;
-        //    cart.UserDetailsId = user;
-        //    cart.TicketPrice = filterPrice;
-        //    cart.Seat = Seat;
-        //    AddCart(cart);
-        //}
-
         public void AddCart(UserCart cart)
         {
             db.UserCarts.Add(cart);
             Save();
         }
 
-        //public IEnumerable<UserCart> UpdateCart(string Seat)
-        //{
-        //    var cart = db.UserCarts.Where(d => d.Seat == Seat).ToList();
-        //    return cart;
-        //}
         public void Save()
         {
             db.SaveChanges();
@@ -111,7 +88,7 @@ namespace CinemaApp.Persistance.Repository
 
         public MovieHallDetails replaceEmptyOrTakenSeat(string Seat, int MovieHallId)
         {
-            return db.MovieHallDetails.Where(d => d.Seat == Seat && d.MovieHallId == MovieHallId).SingleOrDefault();
+            return db.MovieHallDetails.Where(d => d.MovieSeat == Seat && d.MovieHallId == MovieHallId).SingleOrDefault();
         }
 
         public double TicketTotal(int UserDetailsId)
@@ -193,7 +170,7 @@ namespace CinemaApp.Persistance.Repository
         {
             var RemoveUnconfirmedOrders = (from mhd in db.MovieHallDetails
                                             join uc in db.UserCarts
-                                             on mhd.Seat equals uc.Seat
+                                             on mhd.MovieSeat equals uc.Seat
                                             where mhd.UserDetailsId == UserDetailsId && uc.ConfirmCart == false && uc.UserDetailsId == UserDetailsId
                                             select mhd).ToList();
 
@@ -213,5 +190,6 @@ namespace CinemaApp.Persistance.Repository
         {
             return db.UserCarts.Where(d => d.ConfirmCart == true && d.UserDetailsId == UserDetailsId).ToList();
         }
+
     }
 }

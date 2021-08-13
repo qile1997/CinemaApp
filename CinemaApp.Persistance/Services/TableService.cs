@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CinemaApp.Persistance.Repository
+namespace CinemaApp.Persistance.Service
 {
-    public class TableRepository : iTableRepository
+    public class TableService : iTableService
     {
         private AppDbContext db = new AppDbContext();
         public void PrintHallsTable()
@@ -53,9 +53,9 @@ namespace CinemaApp.Persistance.Repository
 
                 foreach (var item in PrintSeats)
                 {
-                    Console.Write(" {0} {1} ", item.Seat, item.SeatStatus);
+                    Console.Write(" {0} {1} ", item.MovieSeat, item.SeatStatus);
 
-                    if (item.Seat.Substring(item.Seat.Length - 2) == "10")
+                    if (item.MovieSeat.Substring(item.MovieSeat.Length - 2) == "10")
                     {
                         Console.WriteLine("");
                     }
@@ -63,40 +63,7 @@ namespace CinemaApp.Persistance.Repository
                 Console.WriteLine("");
             }
         }
-        //public void PrintSampleSeats()
-        //{
-        //    Console.WriteLine("Sample Seats in each hall");
-
-        //    var PrintSampleSeats = new ConsoleTable("");
-
-        //    var SampleSeat = from h in db.Hall
-        //                     join mh in db.MovieHall on h.HallId equals mh.HallId
-        //                     join mhd in db.MovieHallDetails on mh.MovieHallId equals mhd.MovieHallId
-        //                     join m in db.Movie on mh.MovieId equals m.MovieId
-        //                     select new
-        //                     {
-        //                         MovieHallId = mhd.MovieHallId,
-        //                         HallNo = h.HallNo,
-        //                         MovieTitle = m.MovieTitle,
-        //                         MovieDateTime = mh.MovieDateTime,
-        //                         HallId = h.HallId,
-        //                     };
-
-        //    foreach (var item in SampleSeat)
-        //    {
-        //        var _SampleSeats = db.MovieHallDetails.Where(mhd => mhd.MovieHallId == item.MovieHallId);
-
-        //        foreach (var _item in _SampleSeats)
-        //        {
-        //            Console.Write(" {0} {1} ", _item.Seat, _item.SeatStatus);
-
-        //            if (_item.Seat.Substring(_item.Seat.Length - 2) == "10")
-        //            {
-        //                Console.WriteLine("");
-        //            }
-        //        }
-        //    }
-        //}
+ 
         public void PrintMovieHallsTable()
         {
             Console.WriteLine("Movie Halls");

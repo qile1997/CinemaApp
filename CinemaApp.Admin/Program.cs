@@ -1,4 +1,4 @@
-﻿using CinemaApp.Persistance.Repository;
+﻿using CinemaApp.Persistance.Service;
 using System;
 using System.Net.Http;
 
@@ -8,7 +8,7 @@ namespace CinemaApp.Admin
     {
         static void Main(string[] args)
         {
-            TableRepository tableRepo = new TableRepository();
+            TableService TableService = new TableService();
             const string Controller = "Admin";
             HttpResponseMessage response;
             while (true)
@@ -63,26 +63,26 @@ namespace CinemaApp.Admin
                         response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/ClearUserCart").Result;
                         break;
                     case "2":
-                        tableRepo.PrintUserTable();
-                        tableRepo.PrintMoviesTable();
-                        tableRepo.PrintHallsTable();
-                        tableRepo.PrintMovieHallsTable();
-                        tableRepo.PrintMovieHallDetailsTable();
+                        TableService.PrintUserTable();
+                        TableService.PrintMoviesTable();
+                        TableService.PrintHallsTable();
+                        TableService.PrintMovieHallsTable();
+                        TableService.PrintMovieHallDetailsTable();
                         break;
                     case "2a":
-                        tableRepo.PrintUserTable();
+                        TableService.PrintUserTable();
                         break;
                     case "2b":
-                        tableRepo.PrintMoviesTable();
+                        TableService.PrintMoviesTable();
                         break;
                     case "2c":
-                        tableRepo.PrintHallsTable();
+                        TableService.PrintHallsTable();
                         break;
                     case "2d":
-                        tableRepo.PrintMovieHallsTable();
+                        TableService.PrintMovieHallsTable();
                         break;
                     case "2e":
-                        tableRepo.PrintMovieHallDetailsTable();
+                        TableService.PrintMovieHallDetailsTable();
                         break;
                 }
             }

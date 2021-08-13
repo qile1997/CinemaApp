@@ -25,7 +25,6 @@ namespace CinemaApp.DomainEntity.Model
     }
     public enum Transfer
     {
-
         [Display(Name = "Interbank Giro Transfer")] IBG,
         [Display(Name = "Instant Transfer")] IBGT
     }

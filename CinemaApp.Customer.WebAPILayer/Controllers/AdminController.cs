@@ -1,58 +1,54 @@
 ﻿using CinemaApp.DomainEntity.Model;
-using CinemaApp.Persistance.Repository;
-using System;
+using CinemaApp.Persistance.Service;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace CinemaApp.Customer.WebAPILayer.Controllers
 {
     public class AdminController : ApiController
     {
-        private CinemaAdminRepository adminRepo = new CinemaAdminRepository();
+        private CinemaAdminService _cinemaAdminService = new CinemaAdminService();
         [Route("api/Admin/GenerateUserDetails")]
         [HttpGet]
         public void GenerateUserDetails()
         {
-           adminRepo.GenerateUserDetails();
+            _cinemaAdminService.GenerateUserDetails();
         }
         [Route("api/Admin/GenerateMovies")]
         [HttpGet]
         public void GenerateMovies()
         {
-            adminRepo.GenerateMovies();
+            _cinemaAdminService.GenerateMovies();
         }
         [Route("api/Admin/GenerateHalls")]
         [HttpGet]
         public void GenerateHalls()
         {
-            adminRepo.GenerateHalls();
+            _cinemaAdminService.GenerateHalls();
         }
         [Route("api/Admin/GenerateMovieHalls")]
         [HttpGet]
         public void GenerateMovieHalls()
         {
-            adminRepo.GenerateMovieHalls();
+            _cinemaAdminService.GenerateMovieHalls();
         }
         [Route("api/Admin/GenerateMovieHallDetails")]
         [HttpGet]
         public void GenerateMovieHallDetails()
         {
-            adminRepo.GenerateMovieHallDetails();
+            _cinemaAdminService.GenerateMovieHallDetails();
         }
         [Route("api/Admin/ClearUserCart")]
         [HttpGet]
         public void ClearUserCart()
         {
-            adminRepo.ClearUserCart();
+            _cinemaAdminService.ClearUserCart();
         }
         [Route("api/Admin/ClearAllData")]
         [HttpGet]
         public void ClearAllData()
         {
-            adminRepo.ClearAllData();
+            _cinemaAdminService.ClearAllData();
         }
         // GET: api/Admin
         public IEnumerable<string> Get()
@@ -68,11 +64,11 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
 
         // POST: api/Admin
         public void Post(UserDetails user)
-        {          
+        {
         }
 
         // PUT: api/Admin/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
 

@@ -1,17 +1,13 @@
 ﻿using CinemaApp.DomainEntity.Model;
-using CinemaApp.Persistance.Repository;
-using System;
+using CinemaApp.Persistance.Service;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace CinemaApp.Customer.WebAPILayer.Controllers
 {
     public class MovieHallDetailsController : ApiController
     {
-        private CinemaCustomerRepository cinemaRepo = new CinemaCustomerRepository();
+        private CinemaCustomerService _cinemaCustomerService = new CinemaCustomerService();
         // GET: api/MovieHallDetails
         public IEnumerable<string> Get()
         {
@@ -21,27 +17,29 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         // GET: api/MovieHallDetails/5
         public MovieHallDetails Get(int id)
         {
-            return cinemaRepo.GetMovieHallDetail(id);
+            return _cinemaCustomerService.GetMovieHallDetail(id);
         }
         public void Put(MovieHallDetails mhd)
         {
-            cinemaRepo.UpdateMovieHallDetailsSeat(mhd);
+            _cinemaCustomerService.UpdateMovieHallDetailsSeat(mhd);
         }
+
         // POST: api/MovieHallDetails
-        public void Post([FromBody]string value)
+        public void Post([FromBody] string value)
         {
         }
-        [Route("MovieHallDetails/Seat/{MovieHallId:int}")]
+
+        [Route("MovieHallDetails/MovieSeat/{MovieHallId:int}")]
         [HttpGet]
-        public void EmptyOrTaken(string Seat,int MovieHallId)
+        public void EmptyOrTaken(string MovieSeat, int MovieHallId)
         {
-            cinemaRepo.replaceEmptyOrTakenSeat(Seat, MovieHallId);
+            _cinemaCustomerService.replaceEmptyOrTakenSeat(MovieSeat, MovieHallId);
         }
 
         // DELETE: api/MovieHallDetails/5
         public void Delete(int id)
         {
         }
- 
+
     }
 }

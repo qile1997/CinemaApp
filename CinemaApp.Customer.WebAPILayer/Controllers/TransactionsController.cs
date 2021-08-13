@@ -1,21 +1,17 @@
 ﻿using CinemaApp.DomainEntity.Model;
-using CinemaApp.Persistance.Repository;
-using System;
+using CinemaApp.Persistance.Service;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace CinemaApp.Customer.WebAPILayer.Controllers
 {
     public class TransactionsController : ApiController
     {
-        private CinemaCustomerRepository cinemaRepo = new CinemaCustomerRepository();
+        private CinemaCustomerService _cinemaCustomerService = new CinemaCustomerService();
         // GET: api/Transactions
         public IEnumerable<Transactions> Get()
         {
-            return cinemaRepo.GetTransactions();
+            return _cinemaCustomerService.GetTransactions();
         }
 
         // GET: api/Transactions/5
@@ -27,11 +23,11 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         // POST: api/Transactions
         public void Post(Transactions trans)
         {
-            cinemaRepo.AddTransaction(trans);
+            _cinemaCustomerService.AddTransaction(trans);
         }
 
         // PUT: api/Transactions/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
 
@@ -43,7 +39,7 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         [HttpGet]
         public IEnumerable<Transactions> GetUserTransactionList(int UserDetailsId)
         {
-            return cinemaRepo.GetUserTransactionList(UserDetailsId);
+            return _cinemaCustomerService.GetUserTransactionList(UserDetailsId);
         }
     }
 }

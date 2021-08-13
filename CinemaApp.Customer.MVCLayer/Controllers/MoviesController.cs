@@ -14,7 +14,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         private AppDbContext db = new AppDbContext();
         private HttpResponseMessage response;
 
-        private const string Controller = "Movies";
+        private const string MovieController = "Movies";
 
         private const string HallController = "Hall";
 
@@ -27,6 +27,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         private const string MovieHallController = "MovieHall";
 
         private const string UserCartController = "UserCart";
+
         private UserDetails _userDetails { get; set; }
         private Hall _hallData { get; set; }
         private Movie _movieData { get; set; }
@@ -56,19 +57,19 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         //Get Movie data
         public Movie GetMovieData()
         {
-            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/{MovieSessionId()}").Result;
+            response = GlobalVariables.WebApiClient.GetAsync($"{MovieController}/{MovieSessionId()}").Result;
             return response.Content.ReadAsAsync<Movie>().Result;
         }
         //Get Hall data
         public Hall GetHallData()
         {
-            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetHallData/{MovieHallIdSession()}").Result;
+            response = GlobalVariables.WebApiClient.GetAsync($"{MovieController}/GetHallData/{MovieHallIdSession()}").Result;
             return response.Content.ReadAsAsync<Hall>().Result;
         }
         //Get MovieHall Data
         public MovieHall GetMovieHallData()
         {
-            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetMovieHallData/{MovieHallIdSession()}").Result;
+            response = GlobalVariables.WebApiClient.GetAsync($"{MovieController}/GetMovieHallData/{MovieHallIdSession()}").Result;
             return response.Content.ReadAsAsync<MovieHall>().Result;
         }
         //Get Ticket Price From Cart
@@ -89,7 +90,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         }
         public ActionResult Index()
         {
-            response = GlobalVariables.WebApiClient.GetAsync(Controller).Result;
+            response = GlobalVariables.WebApiClient.GetAsync(MovieController).Result;
             IEnumerable<Movie> movieList = response.Content.ReadAsAsync<IEnumerable<Movie>>().Result;
             return View(movieList);
         }
@@ -115,14 +116,16 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             Session["UserId"] = _userDetails.Id;
             return RedirectToAction("MovieList");
         }
+
         public ActionResult MovieList()
         {
-            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetAvailableMovies").Result;
+            response = GlobalVariables.WebApiClient.GetAsync($"{MovieController}/GetAvailableMovies").Result;
             IEnumerable<Movie> movieList = response.Content.ReadAsAsync<IEnumerable<Movie>>().Result;
 
             ViewBag.MovieId = new SelectList(movieList, "MovieId", "MovieId");
             return View(movieList);
         }
+
         [HttpPost]
         public ActionResult MovieList(int MovieId)
         {
@@ -134,7 +137,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
         {
             MovieId = MovieSessionId();
 
-            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetSelectedMovies/{MovieId}").Result;
+            response = GlobalVariables.WebApiClient.GetAsync($"{MovieController}/GetSelectedMovies/{MovieId}").Result;
             IEnumerable<MovieHall> movieHalls = response.Content.ReadAsAsync<IEnumerable<MovieHall>>().Result;
             ViewBag.MovieHallId = new SelectList(movieHalls, "MovieHallId", "MovieHallId");
 
@@ -147,6 +150,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             Session["MovieHallId"] = MovieHallId;
             return RedirectToAction("MovieSeats");
         }
+
         public ActionResult MovieSeats()
         {
             SessionId = UserIdSession();
@@ -156,7 +160,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             Session["PaymentId"] = SessionId;
             Session.Timeout = 5;
 
-            response = GlobalVariables.WebApiClient.GetAsync($"{Controller}/GetMovieSeats/{MovieHallId}").Result;
+            response = GlobalVariables.WebApiClient.GetAsync($"{MovieController}/GetMovieSeats/{MovieHallId}").Result;
             IEnumerable<MovieHallDetails> movieSeats = response.Content.ReadAsAsync<IEnumerable<MovieHallDetails>>().Result;
 
             //Get Current Hall Data
@@ -189,7 +193,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
 
         //Ajax
         [HttpPost]
-        public ActionResult UpdateCart(string Seat)
+        public ActionResult UpdateCart(string MovieSeat)
         {
             AppDbContext db = new AppDbContext();
 
@@ -197,8 +201,8 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             MovieId = MovieSessionId();
             MovieHallId = MovieHallIdSession();
 
-            //Replacing Empty / Taken Seat
-            var replaceEmptyOrTakenSeat = db.MovieHallDetails.Where(d => d.Seat == Seat && d.MovieHallId == MovieHallId).SingleOrDefault();
+            //Replacing Empty / Taken Seat (Get current movie hall and seat)
+            var MovieHallSeat = db.MovieHallDetails.Where(d => d.MovieSeat == MovieSeat && d.MovieHallId == MovieHallId).SingleOrDefault();
 
             //Get Movie Data
             _movieData = GetMovieData();
@@ -216,27 +220,28 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             double TicketTotal = GetTicketPrice();
 
             //Calculate minimum balance needed for ticket
-            if (TicketTotal + _movieData.TicketPrice > _userDetails.Balance && replaceEmptyOrTakenSeat.SeatStatus == Status.E)
+            if (TicketTotal + _movieData.TicketPrice > _userDetails.Balance && MovieHallSeat.SeatStatus == Status.E)
             {
-                return Json(new { Button = true, Msg = _userDetails.Name + " , you need minimum RM" + (_movieData.TicketPrice - Convert.ToDouble(Session["BalanceCount"])) + " to buy seat " + "(" + Seat + ")" }, JsonRequestBehavior.AllowGet);
+                return Json(new { Button = true, Msg = _userDetails.Name + " , you need minimum RM" + (_movieData.TicketPrice - Convert.ToDouble(Session["BalanceCount"])) + " to buy seat " + "(" + MovieSeat + ")" }, JsonRequestBehavior.AllowGet);
             }
 
-            int mhdId = replaceEmptyOrTakenSeat.Id;
-
-            if (replaceEmptyOrTakenSeat.UserDetailsId == null)
+            //Update if seat not occupied
+            if (MovieHallSeat.UserDetailsId == null)
             {
+                //Update seat in movie hall
                 MovieHallDetails mhd = new MovieHallDetails
                 {
-                    Id = mhdId,
+                    Id = MovieHallSeat.Id,
                     MovieHallId = MovieHallId,
-                    Seat = Seat,
-                    SeatStatus = Status.A,
+                    MovieSeat = MovieSeat,
+                    SeatStatus = Status.A, //Add to cart (A)
                     UserDetailsId = SessionId
                 };
 
-                response = GlobalVariables.WebApiClient.PutAsJsonAsync($"{MovieHallDetailsController}/{mhdId}", mhd).Result;
+                response = GlobalVariables.WebApiClient.PutAsJsonAsync($"{MovieHallDetailsController}/{MovieHallSeat.Id}", mhd).Result;
 
-                UserCart cart = new UserCart()
+                //Update user cart
+                UserCart userCart = new UserCart()
                 {
                     UserDetailsId = SessionId,
                     MovieHallsId = MovieHallId,
@@ -244,30 +249,37 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
                     MovieDateTime = _movieHallData.MovieDateTime,
                     HallNo = _hallData.HallNo,
                     TicketPrice = _movieData.TicketPrice,
-                    Seat = Seat,
+                    Seat = MovieSeat,
                     ConfirmCart = false
                 };
 
-                response = GlobalVariables.WebApiClient.PostAsJsonAsync($"{UserCartController}", cart).Result;
+                response = GlobalVariables.WebApiClient.PostAsJsonAsync($"{UserCartController}", userCart).Result;
+                return Json(JsonRequestBehavior.AllowGet);
+            }
+            else if (MovieHallSeat.UserDetailsId != null)
+            {
+                var removeCart = db.UserCarts.Where(d => d.Seat == MovieSeat && d.UserDetailsId == SessionId && d.MovieHallsId == MovieHallId).SingleOrDefault();
+                response = GlobalVariables.WebApiClient.DeleteAsync($"{UserCartController}/{removeCart.Id}").Result;
+
+                //Empty seat in movie hall
+                MovieHallDetails mhd = new MovieHallDetails
+                {
+                    Id = MovieHallSeat.Id,
+                    MovieHallId = MovieHallId,
+                    MovieSeat = MovieSeat,
+                    SeatStatus = Status.E,
+                    UserDetailsId = null
+                };
+
+                response = GlobalVariables.WebApiClient.PutAsJsonAsync($"{MovieHallDetailsController}/{MovieHallSeat.Id}", mhd).Result;
                 return Json(JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var removeCart = db.UserCarts.Where(d => d.Seat == Seat && d.UserDetailsId == SessionId && d.MovieHallsId == MovieHallId).SingleOrDefault();
-                response = GlobalVariables.WebApiClient.DeleteAsync($"{UserCartController}/{removeCart.Id}").Result;
-
-                MovieHallDetails mhd = new MovieHallDetails
-                {
-                    Id = mhdId,
-                    MovieHallId = MovieHallId,
-                    Seat = Seat,
-                    SeatStatus = Status.E,
-                    UserDetailsId = null
-                };
-                response = GlobalVariables.WebApiClient.PutAsJsonAsync($"{MovieHallDetailsController}/{mhdId}", mhd).Result;
-                return Json(JsonRequestBehavior.AllowGet);
+                throw new InvalidOperationException("Not implemented yet");
             }
         }
+
         public ActionResult ClearHistory()
         {
             SessionId = UserIdSession();
@@ -287,6 +299,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             ViewBag.TicketPrice = value - value * 0.05;
             return View();
         }
+
         //Ajax
         [HttpPost]
         public ActionResult RemoveOrderSummaryConfirmed(string TotalAmount, int TransferMode, string Remarks)
@@ -300,7 +313,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             db.SaveChanges();
 
             //Convert Seat from T to E
-            var MovieHallDetails = db.MovieHallDetails.Where(d => d.MovieHallId == UserCart.MovieHallsId && d.UserDetailsId == UserCart.UserDetailsId && d.SeatStatus == Status.O && d.Seat == UserCart.Seat).SingleOrDefault();
+            var MovieHallDetails = db.MovieHallDetails.Where(d => d.MovieHallId == UserCart.MovieHallsId && d.UserDetailsId == UserCart.UserDetailsId && d.SeatStatus == Status.O && d.MovieSeat == UserCart.Seat).SingleOrDefault();
             MovieHallDetails.SeatStatus = Status.E;
             MovieHallDetails.UserDetailsId = null;
             db.SaveChanges();
@@ -351,10 +364,11 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             UpdateUserDetails(user);
             return RedirectToAction("OrderSummaryConfirmed");
         }
+
         public ActionResult OrderSummary()
         {
             //Get Current User Data
-            UserDetails _userDetails = GetUserDetails();
+            _userDetails = GetUserDetails();
 
             //Ticket Total Price
             double TicketTotal = GetTicketPrice();
@@ -367,6 +381,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             ViewBag.Username = _userDetails.Name;
             return View(OrderSummary);
         }
+
         public IEnumerable<UserCart> GetOrderSummary()
         {
             SessionId = UserIdSession();
@@ -375,6 +390,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             IEnumerable<UserCart> OrderSummary = response.Content.ReadAsAsync<IEnumerable<UserCart>>().Result;
             return OrderSummary;
         }
+
         public ActionResult OrderSummaryConfirmed()
         {
             //Get Current User Data  
@@ -386,6 +402,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             ViewBag.Username = _userDetails.Name;
             return View(OrderSummaryConfirmedList);
         }
+
         public ActionResult Payment()
         {
             //Sum of cart seats ticket price
@@ -450,6 +467,7 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             IEnumerable<Transactions> transactionList = response.Content.ReadAsAsync<IEnumerable<Transactions>>().Result;
             return View(transactionList);
         }
+
         public ActionResult Logout()
         {
             db.SaveChanges();
@@ -458,10 +476,12 @@ namespace CinemaApp.Customer.MVCLayer.Controllers
             Session.Abandon();
             return RedirectToAction("Index");
         }
+
         public ActionResult ViewCart()
         {
             return View();
         }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
