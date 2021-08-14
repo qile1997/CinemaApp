@@ -34,7 +34,7 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         // DELETE: api/UserCart/5
         public void Delete(int id)
         {
-            _cinemaCustomerService.DeleteCart(_cinemaCustomerService.GetCart(id));
+            _cinemaCustomerService.RemoveUserCart(_cinemaCustomerService.GetUserCartById(id));
         }
 
         [Route("api/UserCart/ReplaceUnorderedSeats/{UserDetailsId:int}")]

@@ -19,7 +19,7 @@ namespace CinemaApp.DomainEntity.Model
         public DateTime MovieDateTime { get; set; }
         [Display(Name = "Hall")]
         public string HallNo { get; set; }
-        public string Seat { get; set; }
+        public string MovieSeat { get; set; }
         [Display(Name = "Movie Title")]
         public string MovieTitle { get; set; }
         public bool ConfirmCart { get; set; }

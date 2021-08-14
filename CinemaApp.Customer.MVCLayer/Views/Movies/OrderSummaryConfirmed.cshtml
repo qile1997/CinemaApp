@@ -56,7 +56,7 @@
                 @Html.DisplayFor(modelItem => item.TicketPrice)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Seat)
+                @Html.DisplayFor(modelItem => item.MovieSeat)
             </td>
             <td style="text-align:center">
                 @Html.ActionLink("x", "RemoveOrderSummaryConfirmed", new { value = item.TicketPrice, id = item.Id }, htmlAttributes: new { @class = "operator btn btn-danger btn-xs" })

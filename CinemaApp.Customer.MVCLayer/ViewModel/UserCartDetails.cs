@@ -12,7 +12,7 @@ namespace CinemaApp.Customer.MVCLayer.ViewModel
         public int TicketPrice { get; set; }
         public int MovieHallsId { get; set; }
         public string MovieTitle { get; set; }
-        public string Seat { get; set; }
+        public string MovieSeats { get; set; }
         public string HallNo { get; set; }
         public IEnumerable<UserCart> _UserCart { get; set; }
     }

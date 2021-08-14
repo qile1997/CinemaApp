@@ -7,13 +7,13 @@ namespace CinemaApp.Customer.MVCLayer.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class _8821 : IMigrationMetadata
+    public sealed partial class rename : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(_8821));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(rename));
         
         string IMigrationMetadata.Id
         {
-            get { return "202108081206405_8-8-21"; }
+            get { return "202108131914171_rename"; }
         }
         
         string IMigrationMetadata.Source

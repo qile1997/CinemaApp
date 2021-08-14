@@ -58,6 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CinemaAdminService.cs" />
     <Compile Include="Services\CinemaCustomerService.cs" />
+    <Compile Include="Services\MovieService.cs" />
     <Compile Include="Services\TableService.cs" />
   </ItemGroup>
   <ItemGroup>

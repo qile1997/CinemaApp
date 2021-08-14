@@ -134,13 +134,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GlobalVariables.cs" />
-    <Compile Include="Migrations\202108081206405_8-8-21.cs" />
-    <Compile Include="Migrations\202108081206405_8-8-21.Designer.cs">
-      <DependentUpon>202108081206405_8-8-21.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202108131800005_14-8-21.cs" />
-    <Compile Include="Migrations\202108131800005_14-8-21.Designer.cs">
-      <DependentUpon>202108131800005_14-8-21.cs</DependentUpon>
+    <Compile Include="Migrations\202108131914171_rename.cs" />
+    <Compile Include="Migrations\202108131914171_rename.Designer.cs">
+      <DependentUpon>202108131914171_rename.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -239,11 +235,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202108081206405_8-8-21.resx">
-      <DependentUpon>202108081206405_8-8-21.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202108131800005_14-8-21.resx">
-      <DependentUpon>202108131800005_14-8-21.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202108131914171_rename.resx">
+      <DependentUpon>202108131914171_rename.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

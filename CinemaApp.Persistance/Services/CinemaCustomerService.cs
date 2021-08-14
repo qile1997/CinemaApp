@@ -43,10 +43,10 @@ namespace CinemaApp.Persistance.Service
         public void AddCart(UserCart cart)
         {
             db.UserCarts.Add(cart);
-            Save();
+            SaveChanges();
         }
 
-        public void Save()
+        public void SaveChanges()
         {
             db.SaveChanges();
         }
@@ -100,7 +100,7 @@ namespace CinemaApp.Persistance.Service
         public void UpdateMovieHallDetailsSeat(MovieHallDetails mhd)
         {
             db.Entry(mhd).State = EntityState.Modified;
-            Save();
+            SaveChanges();
         }
 
         public IEnumerable<MovieHallDetails> GetMovieHallDetails()
@@ -108,7 +108,7 @@ namespace CinemaApp.Persistance.Service
             return db.MovieHallDetails.ToList();
         }
 
-        public MovieHallDetails GetMovieHallDetail(int Id)
+        public MovieHallDetails GetMovieHallDetailById(int Id)
         {
             return db.MovieHallDetails.Find(Id);
         }
@@ -116,24 +116,24 @@ namespace CinemaApp.Persistance.Service
         public void AddTransaction(Transactions trans)
         {
             db.Transactions.Add(trans);
-            Save();
+            SaveChanges();
         }
 
         public void UpdateUserDetails(UserDetails user)
         {
             db.Entry(user).State = EntityState.Modified;
-            Save();
+            SaveChanges();
         }
 
-        public void DeleteCart(UserCart cart)
+        public void RemoveUserCart(UserCart cart)
         {
             db.UserCarts.Remove(cart);
-            Save();
+            SaveChanges();
         }
 
-        public UserCart GetCart(int Id)
+        public UserCart GetUserCartById(int userCartId)
         {
-            return db.UserCarts.Find(Id);
+            return db.UserCarts.Where(d => d.Id == userCartId).SingleOrDefault();
         }
 
         public IEnumerable<Transactions> GetTransactions()
@@ -146,13 +146,13 @@ namespace CinemaApp.Persistance.Service
             foreach (var item in db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList())
             {
                 item.ConfirmCart = true;
-                Save();
+                SaveChanges();
             }
 
             foreach (var item in db.MovieHallDetails.Where(d => d.UserDetailsId == UserDetailsId).ToList())
             {
                 item.SeatStatus = Status.O;
-                Save();
+                SaveChanges();
             }
         }
 
@@ -170,12 +170,12 @@ namespace CinemaApp.Persistance.Service
         {
             var RemoveUnconfirmedOrders = (from mhd in db.MovieHallDetails
                                             join uc in db.UserCarts
-                                             on mhd.MovieSeat equals uc.Seat
+                                             on mhd.MovieSeat equals uc.MovieSeat
                                             where mhd.UserDetailsId == UserDetailsId && uc.ConfirmCart == false && uc.UserDetailsId == UserDetailsId
                                             select mhd).ToList();
 
             db.UserCarts.RemoveRange(db.UserCarts.Where(d => d.ConfirmCart == false && d.UserDetailsId == UserDetailsId).ToList());
-            Save();
+            SaveChanges();
 
             foreach (var item in RemoveUnconfirmedOrders)
             {
@@ -183,7 +183,7 @@ namespace CinemaApp.Persistance.Service
                 item.UserDetailsId = null;
             }
 
-            Save();
+            SaveChanges();
         }
 
         public IEnumerable<UserCart> OrderSummaryConfirmedList(int UserDetailsId)
@@ -191,5 +191,10 @@ namespace CinemaApp.Persistance.Service
             return db.UserCarts.Where(d => d.ConfirmCart == true && d.UserDetailsId == UserDetailsId).ToList();
         }
 
+        public void RemoveAllTransaction(IEnumerable<Transactions> transactionList)
+        {
+            db.Transactions.Attach(transactionList.First());
+            db.Transactions.RemoveRange(transactionList);
+        }
     }
 }

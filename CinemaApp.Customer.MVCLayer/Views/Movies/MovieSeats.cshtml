@@ -106,7 +106,7 @@
         //Empty Seat (Empty)
         if (item.SeatStatus == CinemaApp.DomainEntity.Model.Status.E)
         {
-            <button class="flex-container Seat" id="@item.MovieSeat">
+            <button class="flex-container MovieSeat" id="@item.MovieSeat">
                 <dl>
                     <dt style="margin-top:-5px;margin-left:6px">
                         E
@@ -145,7 +145,7 @@
                 </dl>
             </div>
         }
-        //Added to cart by other user (Taken)
+        //Added to cart by other user (Taken) , if user close browser and session exists
         else if (item.SeatStatus == CinemaApp.DomainEntity.Model.Status.A && item.UserDetailsId != ViewBag.UserDetailsId)
         {
             <div class="flex-container1">
@@ -176,7 +176,7 @@
         //Added to cart
         else
         {
-            <button class="flex-container3 Seat" id="@item.MovieSeat">
+            <button class="flex-container3 MovieSeat" id="@item.MovieSeat">
                 <dl>
                     <dt style="margin-top:-5px;margin-left:6px">
                         A
@@ -219,7 +219,7 @@
             console.log(dataId);
             $.ajax({
                 type: "POST",
-                url: "/Movies/UpdateCart",
+                url: "/Movies/UpdateMovieSeat",
                 data: { MovieSeat: dataId },
                 success: function (response) {
                     if (response) {

@@ -68,6 +68,7 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         {
             return _cinemaCustomerService.GetMovieData(id);
         }
+
         public void Put(MovieHallDetails mhd)
         {
             _cinemaCustomerService.UpdateMovieHallDetailsSeat(mhd);

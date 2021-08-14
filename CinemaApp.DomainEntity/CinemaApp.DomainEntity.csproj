@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Infrastructure\Interfaces\iCinemaAdminService.cs" />
     <Compile Include="Infrastructure\Interfaces\iCinemaCustomerService.cs" />
+    <Compile Include="Infrastructure\Interfaces\iMovieService.cs" />
     <Compile Include="Infrastructure\Interfaces\iTableService.cs" />
     <Compile Include="Infrastructure\Model\Aggregate\Hall.cs" />
     <Compile Include="Infrastructure\Model\Aggregate\Movie.cs" />
