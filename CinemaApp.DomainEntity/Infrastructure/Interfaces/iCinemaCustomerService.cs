@@ -34,12 +34,12 @@ namespace CinemaApp.DomainEntity.Interfaces
         IEnumerable<MovieHallDetails> GetMovieSeats(int MovieHallId);
         IEnumerable<MovieHallDetails> GetAvailableSeats(int MovieHallId);
         void UpdateMovieHallDetailsSeat(MovieHallDetails mhd);
-        MovieHallDetails replaceEmptyOrTakenSeat(string Seat, int MovieHallId);
+        MovieHallDetails GetMovieHallSeat(string MovieSeat, int MovieHallId);
 
         //UserCart
         UserCart GetUserCartById(int Id);
-        void AddCart(UserCart cart);
-        void RemoveUserCart(UserCart cart);
+        void AddCart(UserCart userCart);
+        void RemoveUserCart(UserCart userCart);
         void ReplaceUnorderedSeats(int UserDetailsId);
         IEnumerable<UserCart> GetUnorderedSeats(int UserDetailsId);
         IEnumerable<UserCart> OrderSummaryConfirmedList(int UserDetailsId);
@@ -47,7 +47,8 @@ namespace CinemaApp.DomainEntity.Interfaces
         //Transactions
         IEnumerable<Transactions> GetTransactions();
         IEnumerable<Transactions> GetUserTransactionList(int UserDetailsId);
-        void AddTransaction(Transactions trans);
+        Transfer GetTransactionMode(int TransferMode);
+        void AddTransaction(Transactions transaction);
         void RemoveAllTransaction(IEnumerable<Transactions> transactions);
         void SaveChanges();
 

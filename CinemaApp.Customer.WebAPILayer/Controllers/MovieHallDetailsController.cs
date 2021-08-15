@@ -29,12 +29,13 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         {
         }
 
-        [Route("MovieHallDetails/MovieSeat/{MovieHallId:int}")]
+        [Route("api/MovieHallDetails/GetMovieHallSeat/{MovieSeat}/{MovieHallId:int}")]
         [HttpGet]
-        public void EmptyOrTaken(string MovieSeat, int MovieHallId)
+        public MovieHallDetails GetMovieHallSeat(string MovieSeat, int MovieHallId)
         {
-            _cinemaCustomerService.replaceEmptyOrTakenSeat(MovieSeat, MovieHallId);
+            return _cinemaCustomerService.GetMovieHallSeat(MovieSeat, MovieHallId);
         }
+
 
         // DELETE: api/MovieHallDetails/5
         public void Delete(int id)

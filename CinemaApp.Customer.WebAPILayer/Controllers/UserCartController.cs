@@ -57,5 +57,12 @@ namespace CinemaApp.Customer.WebAPILayer.Controllers
         {
             return _cinemaCustomerService.OrderSummaryConfirmedList(UserDetailsId);
         }
+
+        [Route("api/UserCart/GetTransferMode/{TransferMode:int}")]
+        [HttpGet]
+        public Transfer TransferMode(int TransferMode)
+        {
+            return _cinemaCustomerService.GetTransactionMode(TransferMode);
+        }
     }
 }

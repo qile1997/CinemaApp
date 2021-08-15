@@ -86,15 +86,14 @@ namespace CinemaApp.Persistance.Service
             return MovieHallData;
         }
 
-        public MovieHallDetails replaceEmptyOrTakenSeat(string Seat, int MovieHallId)
+        public MovieHallDetails GetMovieHallSeat(string MovieSeat, int MovieHallId)
         {
-            return db.MovieHallDetails.Where(d => d.MovieSeat == Seat && d.MovieHallId == MovieHallId).SingleOrDefault();
+            return db.MovieHallDetails.Where(d => d.MovieSeat == MovieSeat && d.MovieHallId == MovieHallId).SingleOrDefault();
         }
 
         public double TicketTotal(int UserDetailsId)
         {
-            double TicketTotal = db.UserCarts.Where(d => d.UserDetailsId == UserDetailsId && d.ConfirmCart == false).Sum(d => (int?)d.TicketPrice) ?? 0;
-            return TicketTotal;
+            return db.UserCarts.Where(d => d.UserDetailsId == UserDetailsId && d.ConfirmCart == false).Sum(d => (int?)d.TicketPrice) ?? 0;
         }
 
         public void UpdateMovieHallDetailsSeat(MovieHallDetails mhd)
@@ -195,6 +194,19 @@ namespace CinemaApp.Persistance.Service
         {
             db.Transactions.Attach(transactionList.First());
             db.Transactions.RemoveRange(transactionList);
+        }
+
+        public Transfer GetTransactionMode(int TransferMode)
+        {
+            switch (TransferMode)
+            {
+                case 0:
+                    return Transfer.IBGT;
+                case 1:
+                    return Transfer.IBG;
+                default:
+                    return 0;
+            }
         }
     }
 }
